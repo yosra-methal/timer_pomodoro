@@ -1,28 +1,29 @@
 :root {
     --bg-white: #FFFFFF;
 
-    /* Copied Gradients from Reference "widget respiration copie/src/index.css" */
-    --grad-grounding: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
-    /* Sky Blue */
-    --grad-calm: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
-    /* Mint Green */
-    --grad-focus: linear-gradient(135deg, #fccb90 0%, #d57eeb 100%);
-    /* Peach/Purple */
-    --grad-sleep: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
-    /* Lavender */
+    /* Using the Reference Styles (Gradients) but mapped to User's Logic */
 
-    /* Text Colors from Reference "widget respiration copie/src/constants.js" */
-    --text-grounding: #365c7d;
-    --text-calm: #2e7d32;
-    --text-focus: #d84315;
-    --text-sleep: #4527a0;
+    /* Standard -> Matches Reference "Grounding" (Blue) */
+    --grad-standard: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+    --text-standard: #365c7d;
+
+    /* Light -> Matches Reference "Calm" (Green) */
+    --grad-light: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+    --text-light: #2e7d32;
+
+    /* Deep Focus -> Matches Reference "Sleep" (Purple) - strictly because Deep Focus was Purple in spec */
+    --grad-deep: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+    --text-deep: #4527a0;
+
+    /* Free Mode -> Matches Reference "Focus" (Peach/Orange) - matches Free Mode Orange spec */
+    --grad-free: linear-gradient(135deg, #fccb90 0%, #d57eeb 100%);
+    --text-free: #d84315;
 
     /* Active Variable placeholders */
-    --active-gradient: var(--grad-grounding);
-    --active-color-primary: var(--text-grounding);
+    --active-gradient: var(--grad-standard);
+    --active-color-primary: var(--text-standard);
 
     --text-primary: #2c3e50;
-    /* from reference */
     --font-primary: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
@@ -50,7 +51,6 @@ body {
     padding: 2px;
     border-radius: 32px;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
-    /* Reference shadow style */
     transition: background 0.3s ease;
 }
 
@@ -58,7 +58,6 @@ body {
     background: var(--bg-white);
     border-radius: 30px;
     padding: 30px 20px;
-    /* Reference padding */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -68,7 +67,7 @@ body {
     background-clip: padding-box;
 }
 
-/* --- Top Title (Format from "mode-label" reference implies title should be clear) --- */
+/* --- Top Title --- */
 .top-mode-title {
     font-size: 32px;
     font-weight: 800;
@@ -76,8 +75,6 @@ body {
     letter-spacing: -0.5px;
     margin-bottom: 0px;
     line-height: 1.2;
-
-    /* Colored Text */
     color: var(--active-color-primary);
     transition: color 0.3s ease;
 }
@@ -97,7 +94,7 @@ body {
     line-height: 1;
 }
 
-/* --- Play Button (Keeping the established Pomodoro functional style but adapting colors) --- */
+/* --- Play Button --- */
 .play-btn {
     width: 72px;
     height: 72px;
@@ -132,26 +129,15 @@ body {
     fill: var(--active-color-primary);
 }
 
-/* --- Mode Inputs Grid (Grid Layout from reference: 2 rows of 2) --- */
+/* --- Mode Inputs Grid --- */
 .mode-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 12px;
-    /* Reference uses gap: 8px to 12px visually */
     width: 100%;
     margin-bottom: 15px;
 }
 
-/* Buttons Reference Style: 
-   .mode-row button {
-       border-radius: 18px; 
-       height: 40px; 
-       font-size: 0.85rem (approx 13px);
-       padding: 0 12px;
-       border: 2px solid transparent;    
-       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
-   }
-*/
 .mode-pill {
     display: flex;
     flex-direction: column;
@@ -160,16 +146,14 @@ body {
     gap: 2px;
 
     background: #FFFFFF;
-    /* Reference buttons often white/light */
     border: 2px solid transparent;
 
     border-radius: 18px;
-    /* Strict Reference match */
+    /* Reference Style */
     height: 50px;
-    /* Slightly taller for 2 lines of text */
 
-    /* Reference Box Shadow */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+    /* Reference Style */
 
     font-family: var(--font-primary);
     font-weight: 500;
@@ -190,12 +174,13 @@ body {
 .mode-pill.active {
     background: #FFFFFF;
 
-    /* Gradient Border from Ref */
+    /* Gradient Border */
     background-image: linear-gradient(#FFF, #FFF), var(--active-gradient);
     background-origin: border-box;
     background-clip: padding-box, border-box;
 
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    /* Reference Style */
 
     color: var(--text-primary);
     font-weight: 600;
@@ -244,7 +229,6 @@ body {
     font-size: 13px;
     font-weight: 600;
     color: #666;
-    /* Reference grey */
     width: 50px;
 }
 
@@ -260,18 +244,15 @@ body {
     width: 18px;
     border-radius: 50%;
     background: #FFFFFF;
-    /* Reference white thumb */
     border: 0.5px solid rgba(0, 0, 0, 0.1);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     margin-top: -7px;
-    /* Align center on 4px track */
     cursor: pointer;
 }
 
 .slider-row input[type=range]::-webkit-slider-runnable-track {
     width: 100%;
     height: 4px;
-    /* Reference 6px -> 4px */
     background: #eee;
     border-radius: 5px;
 }
@@ -303,7 +284,6 @@ body {
     border: none;
     border-radius: 25px;
     background: #2c3e50;
-    /* Reference dark button */
     color: white;
     font-size: 1rem;
     cursor: pointer;

@@ -2,30 +2,30 @@ const MODES = {
     standard: {
         work: 25,
         break: 5,
-        // Renaming to match "Grounding" (Blue) vibe from ref
-        gradientVar: '--grad-grounding',
-        primaryColor: 'var(--text-grounding)'
+        // Blue Gradient from Ref
+        gradientVar: '--grad-standard',
+        primaryColor: 'var(--text-standard)'
     },
     light: {
         work: 15,
         break: 5,
-        // Renaming to match "Calm" (Green) vibe from ref
-        gradientVar: '--grad-calm',
-        primaryColor: 'var(--text-calm)'
+        // Green Gradient from Ref
+        gradientVar: '--grad-light',
+        primaryColor: 'var(--text-light)'
     },
     deep_focus: {
         work: 50,
         break: 10,
-        // Renaming to match "Focus" (Peach/Orange) vibe from ref
-        gradientVar: '--grad-focus',
-        primaryColor: 'var(--text-focus)'
+        // Purple Gradient from Ref
+        gradientVar: '--grad-deep',
+        primaryColor: 'var(--text-deep)'
     },
     custom: {
         work: 25,
         break: 5,
-        // Renaming to match "Sleep" (Purple) vibe from ref
-        gradientVar: '--grad-sleep',
-        primaryColor: 'var(--text-sleep)'
+        // Orange/Peach Gradient from Ref
+        gradientVar: '--grad-free',
+        primaryColor: 'var(--text-free)'
     }
 };
 
@@ -114,21 +114,12 @@ function updateTheme(key) {
 }
 
 function updateTitleText(key) {
-    // Map internal keys to Display Titles if needed, or just format
-    // Ref: "Grounding", "Calm & Rest", "Focus", "Sleep & Relax"
-    // We map our Pomodoro keys to these names or keep "Standard" etc?
-    // User said: "Reprends les TITRES" (Recover titles from reference)
-    // So we map: Standard->Grounding, Light->Calm, Deep Focus->Focus, Custom->Sleep? 
-    // Or we keep Pomodoro semantics but apply Ref styling? 
-    // "Je veux que tu reprennes les titres... exactment comme dans le dossier"
-    // Okay, rewriting titles to match reference exactly.
+    let title = key.replace('_', ' ');
+    if (key === 'custom') title = 'Free Mode';
+    if (key === 'deep_focus') title = 'Deep Focus';
 
-    let title = '';
-    if (key === 'standard') title = 'Grounding';
-    if (key === 'light') title = 'Calm & Rest';
-    if (key === 'deep_focus') title = 'Focus';
-    if (key === 'custom') title = 'Sleep & Relax'; // Or "Free Mode" mapped to Sleep colors? 
-
+    // Capitalize
+    title = title.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
     topModeTitle.textContent = title;
 }
 
