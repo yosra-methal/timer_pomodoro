@@ -287,8 +287,13 @@ body {
 }
 
 /* Active Mode: Center content vertically for better focus */
+/* Active Mode: Center content vertically for better focus */
 .app-container.mode-active .widget-card {
     justify-content: center;
+    min-height: 300px;
+    /* Reduced height for active mode */
+    padding: 20px;
+    /* Reduced padding */
 }
 
 /* --- Active Mode Controls --- */
