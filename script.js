@@ -113,8 +113,8 @@ function updateTheme(key) {
     const root = document.documentElement;
 
     root.style.setProperty('--active-gradient', `var(${config.gradientVar})`);
-    // Assume subtle convention: gradientVar + '-subtle'
-    root.style.setProperty('--active-gradient-subtle', `var(${config.gradientVar}-subtle)`);
+    // Assume subtle convention: gradientVar + '-soft'
+    root.style.setProperty('--active-gradient-subtle', `var(${config.gradientVar}-soft)`);
     root.style.setProperty('--active-color-primary', config.primaryColor);
 }
 
