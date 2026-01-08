@@ -3,25 +3,25 @@ const MODES = {
         work: 25,
         break: 5,
         gradientVar: '--grad-standard',
-        colorVar: '--col-standard'
+        primaryColor: '#007AFF'
     },
     light: {
         work: 15,
         break: 5,
         gradientVar: '--grad-light',
-        colorVar: '--col-light'
+        primaryColor: '#34C759'
     },
     deep_focus: {
         work: 50,
         break: 10,
         gradientVar: '--grad-deep',
-        colorVar: '--col-deep'
+        primaryColor: '#5856D6'
     },
     custom: {
         work: 25,
         break: 5,
         gradientVar: '--grad-free',
-        colorVar: '--col-free'
+        primaryColor: '#FF9500'
     }
 };
 
@@ -101,13 +101,9 @@ function updateTheme(key) {
     const config = MODES[key];
     const root = document.documentElement;
 
-    // We set the active variables to the specific gradient/color variables
-    // But since they are variables themselves, we need to read them or just set them by mapping values? 
-    // Easier way: just set the --active-gradient to the value of var(--grad-X)
-
-    // In JS we can just set the property directly to the var string
+    // Set Gradient and Primary Color Variables
     root.style.setProperty('--active-gradient', `var(${config.gradientVar})`);
-    root.style.setProperty('--active-color', `var(${config.colorVar})`);
+    root.style.setProperty('--active-color-primary', config.primaryColor);
 }
 
 function resetTimerToWork() {
