@@ -97,15 +97,25 @@ body {
     margin-bottom: 24px;
 }
 
+/* Active Mode specific adjustment for Flip Clock centering */
+.app-container.mode-active .flip-clock {
+    margin-bottom: 0;
+    /* Remove margin to center perfectly with flex gap */
+}
+
 .flip-separator {
     font-size: 40px;
     font-weight: 700;
-    color: #FFFFFF;
-    /* White to match digits */
+    /* "Same color as background" -> Apply the Soft Gradient to the text */
+    background: var(--active-gradient-subtle);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    /* Fallback handled by gradient clip */
     margin: 0 4px;
     padding-bottom: 8px;
     /* Alignment adjustment */
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .flip-digit {
