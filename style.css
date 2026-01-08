@@ -1,30 +1,27 @@
 :root {
     --bg-white: #FFFFFF;
 
-    /* Using the Reference Styles map */
-    --grad-standard: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
-    /* Rich Pastel Text Colors (Balanced) - Restored */
+    /* Soft Pastel Gradients (Lighter than original, but COLORED) */
+    --grad-standard-milky: linear-gradient(135deg, #C6DFFF 0%, #D9EEFF 100%);
+    /* Soft Blue */
+    --grad-light-milky: linear-gradient(135deg, #E3FBD6 0%, #E6FCE8 100%);
+    /* Soft Green */
+    --grad-deep-milky: linear-gradient(135deg, #ECE2FD 0%, #F5ECFF 100%);
+    /* Soft Purple */
+    --grad-free-milky: linear-gradient(135deg, #FFE5CC 0%, #FFF0DE 100%);
+    /* Soft Orange */
+
+    /* Original Pastels for Text/Accents */
     --text-standard: #6495ED;
-    /* Cornflower Blue */
-
-    --grad-light: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
     --text-light: #66BB6A;
-    /* Balanced Pastel Green */
-
-    --grad-deep: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
     --text-deep: #9575CD;
-    /* Deep Lilac */
-
-    --grad-free: linear-gradient(135deg, #fccb90 0%, #d57eeb 100%);
     --text-free: #FFA726;
-    /* Rich Apricot */
 
     /* Active Variable placeholders */
-    --active-gradient: var(--grad-standard);
+    --active-gradient: var(--grad-standard-milky);
     --active-color-primary: var(--text-standard);
 
     --text-primary: #2c3e50;
-    /* Restored User Preferred Dark Blue-Grey */
     --font-primary: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
@@ -57,29 +54,6 @@ body {
 }
 
 .widget-card {
-    /* Soft Pastel Gradients (Lighter than original, but COLORED - not milky white) */
-    --grad-standard-milky: linear-gradient(135deg, #C6DFFF 0%, #D9EEFF 100%);
-    /* Soft Blue */
-    --grad-light-milky: linear-gradient(135deg, #E3FBD6 0%, #E6FCE8 100%);
-    /* Soft Green */
-    --grad-deep-milky: linear-gradient(135deg, #ECE2FD 0%, #F5ECFF 100%);
-    /* Soft Purple */
-    --grad-free-milky: linear-gradient(135deg, #FFE5CC 0%, #FFF0DE 100%);
-    /* Soft Orange */
-
-    /* Original Pastels for Text/Accents */
-    --text-standard: #6495ED;
-    --text-light: #66BB6A;
-    --text-deep: #9575CD;
-    --text-free: #FFA726;
-
-    /* Active Variable placeholders - Using the Soft Pastel Gradients */
-    --active-gradient: var(--grad-standard-milky);
-    --active-color-primary: var(--text-standard);
-
-    --text-primary: #2c3e50;
-    --font-primary: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
-
     background: var(--bg-white);
     border-radius: 30px;
     padding: 30px 20px;
