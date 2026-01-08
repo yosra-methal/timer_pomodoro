@@ -1,21 +1,16 @@
 :root {
     --bg-white: #FFFFFF;
 
-    /* Using the Reference Styles (Gradients) but mapped to User's Logic */
-
-    /* Standard -> Matches Reference "Grounding" (Blue) */
+    /* Using the Reference Styles map */
     --grad-standard: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
     --text-standard: #365c7d;
 
-    /* Light -> Matches Reference "Calm" (Green) */
     --grad-light: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
     --text-light: #2e7d32;
 
-    /* Deep Focus -> Matches Reference "Sleep" (Purple) - strictly because Deep Focus was Purple in spec */
     --grad-deep: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
     --text-deep: #4527a0;
 
-    /* Free Mode -> Matches Reference "Focus" (Peach/Orange) - matches Free Mode Orange spec */
     --grad-free: linear-gradient(135deg, #fccb90 0%, #d57eeb 100%);
     --text-free: #d84315;
 
@@ -73,8 +68,8 @@ body {
     font-weight: 800;
     text-transform: capitalize;
     letter-spacing: -0.5px;
-    margin-bottom: 10px;
-    /* Added spacing for "breathing" room */
+    margin-bottom: 15px;
+    /* Increased visual breathing */
     line-height: 1.2;
     color: var(--active-color-primary);
     transition: color 0.3s ease;
@@ -95,25 +90,19 @@ body {
     line-height: 1;
 }
 
-/* --- Play Button --- */
+/* --- Play Button (Selection View) --- */
 .play-btn {
     width: 72px;
     height: 72px;
     border-radius: 50%;
     background: #FFFFFF;
     position: relative;
-
     border: 1.5px solid transparent;
-    background-image:
-        linear-gradient(#FFF, #FFF),
-        var(--active-gradient);
+    background-image: linear-gradient(#FFF, #FFF), var(--active-gradient);
     background-origin: border-box;
     background-clip: content-box, border-box;
-
     box-shadow: 0 0 20px -4px var(--active-color-primary);
-
     color: var(--active-color-primary);
-
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -126,8 +115,47 @@ body {
     transform: scale(1.05);
 }
 
-.play-btn svg path {
+.play-btn svg path,
+.play-btn svg rect {
     fill: var(--active-color-primary);
+}
+
+/* --- Active Mode Controls --- */
+.active-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+/* Reusing .play-btn styles but maybe handling size if needed, 
+   CSS classes can handle it. */
+.small-play-btn {
+    /* Identical to main play btn usually, but let me check if 
+       user wants it smaller. "Bouton play/pause". 
+       Let's keep it same size for consistency. */
+    margin-bottom: 0;
+    /* Reset margin in this context */
+}
+
+.exit-link {
+    background: none;
+    border: none;
+    font-size: 13px;
+    color: #8E8E93;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: color 0.2s;
+}
+
+.exit-link:hover {
+    color: var(--text-primary);
+    background: rgba(0, 0, 0, 0.03);
 }
 
 /* --- Mode Inputs Grid --- */
@@ -145,22 +173,15 @@ body {
     align-items: center;
     justify-content: center;
     gap: 2px;
-
     background: #FFFFFF;
     border: 2px solid transparent;
-
     border-radius: 18px;
-    /* Reference Style */
     height: 50px;
-
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
-    /* Reference Style */
-
     font-family: var(--font-primary);
     font-weight: 500;
     font-size: 13px;
     color: var(--text-primary);
-
     cursor: pointer;
     transition: all 0.2s ease;
 }
@@ -174,15 +195,10 @@ body {
 /* Selected State */
 .mode-pill.active {
     background: #FFFFFF;
-
-    /* Gradient Border */
     background-image: linear-gradient(#FFF, #FFF), var(--active-gradient);
     background-origin: border-box;
     background-clip: padding-box, border-box;
-
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    /* Reference Style */
-
     color: var(--text-primary);
     font-weight: 600;
 }
@@ -276,22 +292,4 @@ body {
     font-weight: 500;
     color: #8E8E93;
     margin-bottom: 48px;
-}
-
-.stop-btn {
-    width: 100%;
-    margin-top: 10px;
-    padding: 12px 30px;
-    border: none;
-    border-radius: 25px;
-    background: #2c3e50;
-    color: white;
-    font-size: 1rem;
-    cursor: pointer;
-    letter-spacing: 1px;
-    transition: all 0.2s;
-}
-
-.stop-btn:hover {
-    opacity: 0.9;
 }

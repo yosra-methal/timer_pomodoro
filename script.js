@@ -2,28 +2,24 @@ const MODES = {
     standard: {
         work: 25,
         break: 5,
-        // Blue Gradient from Ref
         gradientVar: '--grad-standard',
         primaryColor: 'var(--text-standard)'
     },
     light: {
         work: 15,
         break: 5,
-        // Green Gradient from Ref
         gradientVar: '--grad-light',
         primaryColor: 'var(--text-light)'
     },
     deep_focus: {
         work: 50,
         break: 10,
-        // Purple Gradient from Ref
         gradientVar: '--grad-deep',
         primaryColor: 'var(--text-deep)'
     },
     custom: {
         work: 25,
         break: 5,
-        // Orange/Peach Gradient from Ref
         gradientVar: '--grad-free',
         primaryColor: 'var(--text-free)'
     }
@@ -42,8 +38,9 @@ const views = {
 };
 const timerDisplay = document.getElementById('digitalTimer');
 const topModeTitle = document.getElementById('topModeTitle');
-const startBtn = document.getElementById('startBtn');
-const stopBtn = document.getElementById('stopBtn');
+const startBtn = document.getElementById('startBtn'); // Selection Play
+const activeToggleBtn = document.getElementById('activeToggleBtn'); // Active Play/Pause
+const exitBtn = document.getElementById('exitBtn'); // Active Exit
 const modePills = document.querySelectorAll('.mode-pill');
 const customControls = document.getElementById('customControls');
 const cycleIndicator = document.getElementById('cycleIndicator');
@@ -54,9 +51,13 @@ const breakSlider = document.getElementById('breakSlider');
 const workValDisplay = document.getElementById('workValueDisplay');
 const breakValDisplay = document.getElementById('breakValueDisplay');
 
+// Ions/SVGs
+const ICON_PLAY = `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 5V19L19 12L8 5Z" fill="currentColor"/></svg>`;
+const ICON_PAUSE = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="7" y="5" width="4" height="14" rx="2" fill="currentColor"/><rect x="13" y="5" width="4" height="14" rx="2" fill="currentColor"/></svg>`;
+
+
 function init() {
     setupListeners();
-    // Force initial update to set title correctly
     selectMode('standard');
 }
 
@@ -72,7 +73,10 @@ function setupListeners() {
     });
 
     startBtn.addEventListener('click', enterActiveMode);
-    stopBtn.addEventListener('click', exitActiveMode);
+
+    // Updated Logic for Active Controls
+    activeToggleBtn.addEventListener('click', toggleTimerState);
+    exitBtn.addEventListener('click', exitActiveMode);
 
     workSlider.addEventListener('input', (e) => {
         MODES.custom.work = parseInt(e.target.value);
@@ -89,11 +93,9 @@ function setupListeners() {
 function selectMode(key) {
     currentModeKey = key;
 
-    // UI Update Pill
     modePills.forEach(p => p.classList.remove('active'));
     document.querySelector(`.mode-pill[data-mode="${key}"]`).classList.add('active');
 
-    // Show/Hide Free Mode Controls
     if (key === 'custom') {
         customControls.classList.remove('hidden');
     } else {
@@ -108,7 +110,6 @@ function selectMode(key) {
 function updateTheme(key) {
     const config = MODES[key];
     const root = document.documentElement;
-
     root.style.setProperty('--active-gradient', `var(${config.gradientVar})`);
     root.style.setProperty('--active-color-primary', config.primaryColor);
 }
@@ -118,7 +119,6 @@ function updateTitleText(key) {
     if (key === 'custom') title = 'Free Mode';
     if (key === 'deep_focus') title = 'Deep Focus';
 
-    // Capitalize
     title = title.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
     topModeTitle.textContent = title;
 }
@@ -137,16 +137,40 @@ function enterActiveMode() {
     const brk = MODES[currentModeKey].break;
     cycleIndicator.textContent = `${work}-${brk}`;
 
+    // Auto Start
     startTimer();
+    updateToggleBtn(true);
 }
 
 function exitActiveMode() {
     stopTimer();
-
     views.active.classList.add('hidden');
     views.selection.classList.remove('hidden');
-
     resetTimerToWork();
+}
+
+function toggleTimerState() {
+    if (isRunning) {
+        // Wants to Pause
+        pauseTimer();
+        updateToggleBtn(false);
+    } else {
+        // Wants to Resume
+        startTimer();
+        updateToggleBtn(true);
+    }
+}
+
+function updateToggleBtn(isPausedStateShouldBe) {
+    // If running -> Show Pause Icon
+    // If paused -> Show Play Icon
+    if (isRunning) {
+        activeToggleBtn.innerHTML = ICON_PAUSE;
+        activeToggleBtn.setAttribute('aria-label', 'Pause');
+    } else {
+        activeToggleBtn.innerHTML = ICON_PLAY;
+        activeToggleBtn.setAttribute('aria-label', 'Play');
+    }
 }
 
 function startTimer() {
@@ -159,8 +183,15 @@ function startTimer() {
         } else {
             clearInterval(timerInterval);
             isRunning = false;
+            updateToggleBtn(false); // Back to play
         }
     }, 1000);
+}
+
+function pauseTimer() {
+    clearInterval(timerInterval);
+    isRunning = false;
+    // UI update handled in toggleTimerState usually, but standard helper here
 }
 
 function stopTimer() {

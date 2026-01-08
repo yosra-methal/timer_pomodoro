@@ -68,8 +68,20 @@
             <!-- View 2: Active Mode -->
             <div id="activeView" class="view-container active-view hidden">
                 <div id="cycleIndicator" class="cycle-indicator">25-5</div>
-                <div class="controls-sub">
-                    <button id="stopBtn" class="stop-btn">Stop</button>
+                <div class="active-controls">
+                    <button id="activeToggleBtn" class="play-btn small-play-btn" aria-label="Pause">
+                        <!-- Default to Pause Icon since we auto-start -->
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 4L14 4V20L10 20V4Z" />
+                            <path d="M6 4L6 20" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+                            <path d="M18 4L18 20" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+                            <!-- Actually let's use simple rects for pause or a standard path -->
+                            <rect x="7" y="5" width="4" height="14" rx="2" fill="currentColor" />
+                            <rect x="13" y="5" width="4" height="14" rx="2" fill="currentColor" />
+                        </svg>
+                    </button>
+
+                    <button id="exitBtn" class="exit-link">Exit</button>
                 </div>
             </div>
 
