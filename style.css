@@ -77,12 +77,13 @@ body {
 /* --- Top Title --- */
 .top-mode-title {
     font-size: 32px;
-    font-weight: 800;
+    font-weight: 600;
+    /* Reduced from 800 for elegance */
     text-transform: capitalize;
     letter-spacing: -0.5px;
     margin-bottom: 15px;
-    /* Increased visual breathing */
     line-height: 1.2;
+    /* Colored Text */
     color: var(--active-color-primary);
     transition: color 0.3s ease;
 }
