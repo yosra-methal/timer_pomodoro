@@ -57,21 +57,28 @@ body {
 }
 
 .widget-card {
-    /* Milky / Washed Out Gradients (High Brightness, Low Saturation) */
-    --grad-standard-milky: linear-gradient(135deg, #D4E5FF 0%, #EBF5FF 100%);
-    /* Milky Blue */
-    --grad-light-milky: linear-gradient(135deg, #E8F7E3 0%, #F1FCEF 100%);
-    /* Milky Green */
-    --grad-deep-milky: linear-gradient(135deg, #F0E6FA 0%, #F7F0FF 100%);
-    /* Milky Purple */
-    --grad-free-milky: linear-gradient(135deg, #FFF0D9 0%, #FFF8E6 100%);
-    /* Milky Orange */
+    /* Soft Pastel Gradients (Lighter than original, but COLORED - not milky white) */
+    --grad-standard-milky: linear-gradient(135deg, #C6DFFF 0%, #D9EEFF 100%);
+    /* Soft Blue */
+    --grad-light-milky: linear-gradient(135deg, #E3FBD6 0%, #E6FCE8 100%);
+    /* Soft Green */
+    --grad-deep-milky: linear-gradient(135deg, #ECE2FD 0%, #F5ECFF 100%);
+    /* Soft Purple */
+    --grad-free-milky: linear-gradient(135deg, #FFE5CC 0%, #FFF0DE 100%);
+    /* Soft Orange */
 
-    /* Original Pastels for Text/Accents (Kept for reference if needed, but not used for BG now) */
+    /* Original Pastels for Text/Accents */
     --text-standard: #6495ED;
     --text-light: #66BB6A;
     --text-deep: #9575CD;
     --text-free: #FFA726;
+
+    /* Active Variable placeholders - Using the Soft Pastel Gradients */
+    --active-gradient: var(--grad-standard-milky);
+    --active-color-primary: var(--text-standard);
+
+    --text-primary: #2c3e50;
+    --font-primary: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
 
     background: var(--bg-white);
     border-radius: 30px;
@@ -115,12 +122,10 @@ body {
     font-size: 40px;
     font-weight: 700;
     color: #FFFFFF;
-    /* White to match digits per "Refined Aesthetic" */
+    /* White to match digits */
     margin: 0 4px;
     padding-bottom: 8px;
     /* Alignment adjustment */
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
-    /* Shadow for legibility */
     transition: color 0.3s ease;
 }
 
@@ -135,8 +140,6 @@ body {
     text-align: center;
     color: #FFFFFF;
     /* Pure White Numbers */
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
-    /* Essential for contrast on milky bg */
     transition: color 0.3s ease;
 }
 
@@ -155,7 +158,7 @@ body {
     height: 50%;
     overflow: hidden;
     background: var(--active-gradient);
-    /* Colored Background (Gradient) */
+    /* Uses the Soft Pastel Gradient */
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     transform-style: preserve-3d;
