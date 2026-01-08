@@ -111,7 +111,10 @@ function selectMode(key) {
 function updateTheme(key) {
     const config = MODES[key];
     const root = document.documentElement;
+
     root.style.setProperty('--active-gradient', `var(${config.gradientVar})`);
+    // Assume subtle convention: gradientVar + '-subtle'
+    root.style.setProperty('--active-gradient-subtle', `var(${config.gradientVar}-subtle)`);
     root.style.setProperty('--active-color-primary', config.primaryColor);
 }
 
