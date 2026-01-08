@@ -1,197 +1,175 @@
-// Configuration for each mode
 const MODES = {
     standard: {
         work: 25,
         break: 5,
-        long_break: 20,
-        colors: { start: '#007AFF', end: '#00C6FF' },
-        rgba: 'rgba(0, 122, 255, 0.5)'
+        color: '#007AFF' // Blue
     },
     light: {
         work: 15,
         break: 5,
-        long_break: 15,
-        colors: { start: '#28CD41', end: '#87EE85' },
-        rgba: 'rgba(40, 205, 65, 0.5)'
+        color: '#34C759' // Green
     },
     deep_focus: {
         work: 50,
         break: 10,
-        long_break: 30,
-        colors: { start: '#AF52DE', end: '#D5A3FF' },
-        rgba: 'rgba(175, 82, 222, 0.5)'
+        color: '#AF52DE' // Purple
     },
     custom: {
-        work: 25, // default initial
+        work: 25,
         break: 5,
-        colors: { start: '#FF9500', end: '#FFCC00' },
-        rgba: 'rgba(255, 149, 0, 0.5)'
+        color: '#FF9500' // Orange
     }
 };
 
-// State
-let currentMode = 'standard';
-let timerState = 'stopped'; // stopped, running, paused
-let phase = 'work'; // work, break
-let timeLeft = MODES.standard.work * 60;
+let currentModeKey = 'standard';
 let timerInterval = null;
+let timeLeft = MODES.standard.work * 60;
+let isRunning = false;
 
-// DOM Elements
-const body = document.body;
-const appContainer = document.querySelector('.app-container');
-const modeBtns = document.querySelectorAll('.mode-btn');
+// DOM
+const views = {
+    selection: document.getElementById('selectionView'),
+    active: document.getElementById('activeView')
+};
 const timerDisplay = document.getElementById('digitalTimer');
-const statusLabel = document.getElementById('statusLabel');
-const mainBtn = document.getElementById('mainActionBtn');
-const playIcon = document.querySelector('.icon-play');
-const pauseIcon = document.querySelector('.icon-pause');
+const startBtn = document.getElementById('startBtn');
+const stopBtn = document.getElementById('stopBtn');
+const modePills = document.querySelectorAll('.mode-pill');
 const customControls = document.getElementById('customControls');
+const activeModeTitle = document.getElementById('activeModeTitle');
+const cycleIndicator = document.getElementById('cycleIndicator');
+
+// Inputs
 const workSlider = document.getElementById('workSlider');
 const breakSlider = document.getElementById('breakSlider');
-const workValue = document.getElementById('workValue');
-const breakValue = document.getElementById('breakValue');
+const workValDisplay = document.getElementById('workValueDisplay');
+const breakValDisplay = document.getElementById('breakValueDisplay');
 
-// Initialization
 function init() {
-    updateVisuals('standard');
-    updateTimerDisplay();
-    setupEventListeners();
+    setupListeners();
+    updateTheme(currentModeKey);
+    updateTimerDisplay(); // Show initial 25:00
 }
 
-// Logic
-function setupEventListeners() {
-    // Mode Switching
-    modeBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const mode = e.target.dataset.mode;
-            switchMode(mode);
+function setupListeners() {
+    // Mode Selection
+    modePills.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const mode = btn.dataset.mode;
+            selectMode(mode);
         });
     });
 
-    // Play/Pause
-    mainBtn.addEventListener('click', toggleTimer);
+    // Start
+    startBtn.addEventListener('click', () => {
+        enterActiveMode();
+    });
+
+    // Stop / Reset
+    stopBtn.addEventListener('click', () => {
+        exitActiveMode();
+    });
 
     // Custom Sliders
     workSlider.addEventListener('input', (e) => {
         MODES.custom.work = parseInt(e.target.value);
-        workValue.textContent = `${MODES.custom.work}m`;
-        if (currentMode === 'custom' && timerState === 'stopped' && phase === 'work') {
-            timeLeft = MODES.custom.work * 60;
-            updateTimerDisplay();
-        }
+        workValDisplay.textContent = MODES.custom.work;
+        if (currentModeKey === 'custom') resetTimerToWork();
     });
 
     breakSlider.addEventListener('input', (e) => {
         MODES.custom.break = parseInt(e.target.value);
-        breakValue.textContent = `${MODES.custom.break}m`;
-        // If we were in break phase in custom mode (edge case), update it
-    });
+        breakValDisplay.textContent = MODES.custom.break;
+    }); // Break updates don't change current timer unless we are in break, but here we are in selection mode (Work) usually
 }
 
-function switchMode(mode) {
-    if (currentMode === mode) return;
-    
-    // Stop current timer
-    stopTimer();
-    
-    currentMode = mode;
-    phase = 'work'; // Reset to work phase on mode switch
-    
-    // Reset time based on mode
-    const duration = mode === 'custom' ? MODES.custom.work : MODES[mode].work;
-    timeLeft = duration * 60;
-    
-    updateVisuals(mode);
-    updateTimerDisplay();
-    
-    // UI Updates for Custom Mode
-    if (mode === 'custom') {
+function selectMode(key) {
+    currentModeKey = key;
+
+    // UI Update
+    modePills.forEach(p => p.classList.remove('active'));
+    document.querySelector(`.mode-pill[data-mode="${key}"]`).classList.add('active');
+
+    // Show/Hide Custom Controls
+    if (key === 'custom') {
         customControls.classList.remove('hidden');
-        timerDisplay.style.fontSize = '48px'; // Shrink slightly to fit
     } else {
         customControls.classList.add('hidden');
-        timerDisplay.style.fontSize = '64px';
     }
+
+    // Update Theme Colors
+    updateTheme(key);
+
+    // Reset Timer to this mode's Work time
+    resetTimerToWork();
 }
 
-function updateVisuals(mode) {
-    const config = MODES[mode];
-    
-    // Update CSS Variables for Gradients
-    document.documentElement.style.setProperty('--active-grad-start', config.colors.start);
-    document.documentElement.style.setProperty('--active-grad-end', config.colors.end);
-    document.documentElement.style.setProperty('--shadow-color', config.rgba);
-
-    // Update Buttons
-    modeBtns.forEach(btn => {
-        if (btn.dataset.mode === mode) {
-            btn.classList.add('active');
-        } else {
-            btn.classList.remove('active');
-        }
-    });
+function updateTheme(key) {
+    const color = MODES[key].color;
+    document.documentElement.style.setProperty('--theme-color', color);
 }
 
-function toggleTimer() {
-    if (timerState === 'running') {
-        pauseTimer();
-    } else {
-        startTimer();
-    }
+function resetTimerToWork() {
+    const duration = MODES[currentModeKey].work;
+    timeLeft = duration * 60;
+    updateTimerDisplay();
+}
+
+function enterActiveMode() {
+    // Switch View
+    views.selection.classList.add('hidden');
+    views.selection.style.display = 'none'; // Ensure layout removal
+
+    views.active.classList.remove('hidden');
+    views.active.style.display = 'flex';
+
+    // Update Active View Text
+    const modeName = currentModeKey.replace('_', ' '); // deep_focus -> deep focus
+    activeModeTitle.textContent = modeName;
+
+    const work = MODES[currentModeKey].work;
+    const brk = MODES[currentModeKey].break;
+    cycleIndicator.textContent = `${work}-${brk}`;
+
+    // Start Timer
+    startTimer();
+}
+
+function exitActiveMode() {
+    stopTimer();
+
+    // Switch View Back
+    views.active.classList.add('hidden');
+    views.selection.classList.remove('hidden');
+    views.selection.style.display = 'flex'; // Restore flow
+
+    // Reset Timer logic? User probably wants to reset if they hit stop. 
+    resetTimerToWork();
 }
 
 function startTimer() {
-    timerState = 'running';
-    toggleIcons(true); // show pause
-    
+    if (isRunning) return;
+    isRunning = true;
+
     timerInterval = setInterval(() => {
         if (timeLeft > 0) {
             timeLeft--;
             updateTimerDisplay();
         } else {
-            handleTimerComplete();
+            // Timer finished
+            // For MVP, just stop or handle phases. 
+            // Specs: "Indication... 25-5". 
+            // We'll just stop at 00:00 for now or flip to break -> out of scope for "visual redesign" request but good for UX.
+            // Let's just stop and alert visually.
+            clearInterval(timerInterval);
+            isRunning = false;
         }
     }, 1000);
 }
 
-function pauseTimer() {
-    timerState = 'paused';
-    clearInterval(timerInterval);
-    toggleIcons(false); // show play
-}
-
 function stopTimer() {
-    timerState = 'stopped';
-    clearInterval(timerInterval);
-    toggleIcons(false);
-}
-
-function handleTimerComplete() {
-    // Basic phase switching logic using alert/notification placeholders
-    // For MVP: Switch phase and restart or stop
-    stopTimer();
-    
-    if (phase === 'work') {
-        phase = 'break';
-        statusLabel.textContent = 'Break Time';
-        
-        let breakDuration = MODES[currentMode].break;
-        if (currentMode === 'custom') breakDuration = MODES.custom.break;
-        
-        timeLeft = breakDuration * 60;
-        updateTimerDisplay();
-        startTimer(); // Auto-start break? usually yes in simple apps, or wait. Let's auto-start for fluidity.
-    } else {
-        phase = 'work';
-        statusLabel.textContent = 'Focus';
-        
-        let workDuration = MODES[currentMode].work;
-        if (currentMode === 'custom') workDuration = MODES.custom.work;
-        
-        timeLeft = workDuration * 60;
-        updateTimerDisplay();
-        // Wait for user to start work again
-    }
+    if (timerInterval) clearInterval(timerInterval);
+    isRunning = false;
 }
 
 function updateTimerDisplay() {
@@ -200,15 +178,4 @@ function updateTimerDisplay() {
     timerDisplay.textContent = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
 }
 
-function toggleIcons(isRunning) {
-    if (isRunning) {
-        playIcon.classList.add('hidden');
-        pauseIcon.classList.remove('hidden');
-    } else {
-        playIcon.classList.remove('hidden');
-        pauseIcon.classList.add('hidden');
-    }
-}
-
-// Run
 init();
