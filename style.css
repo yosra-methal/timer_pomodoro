@@ -1,27 +1,31 @@
 :root {
     --bg-white: #FFFFFF;
 
-    /* Exact Kickoff Spec Colors */
-    --grad-standard: linear-gradient(135deg, #007AFF 0%, #00C6FF 100%);
-    --text-standard: #007AFF;
-    /* Matching Primary */
+    /* Using the Reference Styles map */
+    --grad-standard: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+    /* Rich Pastel Text Colors (Balanced) - Restored */
+    --text-standard: #6495ED;
+    /* Cornflower Blue */
 
-    --grad-light: linear-gradient(135deg, #28CD41 0%, #87EE85 100%);
-    --text-light: #28CD41;
+    --grad-light: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+    --text-light: #66BB6A;
+    /* Balanced Pastel Green */
 
-    --grad-deep: linear-gradient(135deg, #AF52DE 0%, #D5A3FF 100%);
-    --text-deep: #AF52DE;
+    --grad-deep: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+    --text-deep: #9575CD;
+    /* Deep Lilac */
 
-    --grad-free: linear-gradient(135deg, #FF9500 0%, #FFCC00 100%);
-    --text-free: #FF9500;
+    --grad-free: linear-gradient(135deg, #fccb90 0%, #d57eeb 100%);
+    --text-free: #FFA726;
+    /* Rich Apricot */
 
     /* Active Variable placeholders */
     --active-gradient: var(--grad-standard);
     --active-color-primary: var(--text-standard);
 
-    --text-primary: #1C1C1E;
-    /* Dark Grey/Black for general text */
-    --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --text-primary: #2c3e50;
+    /* Restored User Preferred Dark Blue-Grey */
+    --font-primary: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
 * {
@@ -46,11 +50,10 @@ body {
     width: 320px;
     background: var(--active-gradient);
     padding: 2px;
-    border-radius: 30px;
-    /* 28px inner + 2px border */
-    /* Spec: "Soft glow shadow matching the active mode's gradient" */
-    box-shadow: 0 10px 40px -10px var(--active-color-primary);
-    transition: background 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 32px;
+    /* Restored Neutral Shadow */
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+    transition: background 0.3s ease;
 }
 
 .widget-card {
