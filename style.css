@@ -3,19 +3,23 @@
 
     /* Using the Reference Styles map */
     --grad-standard: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
-    /* Pastel Text Colors (Softer, but legible) */
-    --text-standard: #82B1FF;
+    /* Pastel Text Colors (More Saturated) */
+    --text-standard: #5C9DFF;
+    /* Vivid Soft Blue */
     /* Soft Blue */
     --grad-light: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
-    --text-light: #81C784;
+    --text-light: #5CD669;
+    /* Vivid Soft Green */
     /* Soft Green */
 
     --grad-deep: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
-    --text-deep: #B39DDB;
+    --text-deep: #9F4DFF;
+    /* Vivid Purple (Deep Focus) */
     /* Soft Purple */
 
     --grad-free: linear-gradient(135deg, #fccb90 0%, #d57eeb 100%);
-    --text-free: #FFB74D;
+    --text-free: #FFAA33;
+    /* Vivid Soft Orange */
     /* Soft Orange */
 
     /* Active Variable placeholders */
