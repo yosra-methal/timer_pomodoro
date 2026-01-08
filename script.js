@@ -37,11 +37,11 @@ const views = {
     active: document.getElementById('activeView')
 };
 const timerDisplay = document.getElementById('digitalTimer');
+const topModeTitle = document.getElementById('topModeTitle'); // NEW
 const startBtn = document.getElementById('startBtn');
 const stopBtn = document.getElementById('stopBtn');
 const modePills = document.querySelectorAll('.mode-pill');
 const customControls = document.getElementById('customControls');
-const activeModeTitle = document.getElementById('activeModeTitle');
 const cycleIndicator = document.getElementById('cycleIndicator');
 
 // Inputs
@@ -52,14 +52,13 @@ const breakValDisplay = document.getElementById('breakValueDisplay');
 
 function init() {
     setupListeners();
-    updateTheme(currentModeKey);
-    updateTimerDisplay();
+    // Force initial update to set title correctly
+    selectMode('standard');
 }
 
 function setupListeners() {
     modePills.forEach(btn => {
         btn.addEventListener('click', (e) => {
-            // Traverse up in case user clicks the span inside button
             const target = e.target.closest('.mode-pill');
             if (target) {
                 const mode = target.dataset.mode;
@@ -98,6 +97,7 @@ function selectMode(key) {
     }
 
     updateTheme(key);
+    updateTitleText(key);
     resetTimerToWork();
 }
 
@@ -107,6 +107,16 @@ function updateTheme(key) {
 
     root.style.setProperty('--active-gradient', `var(${config.gradientVar})`);
     root.style.setProperty('--active-color-primary', config.primaryColor);
+}
+
+function updateTitleText(key) {
+    let title = key.replace('_', ' ');
+    if (key === 'custom') title = 'Free Mode';
+    if (key === 'deep_focus') title = 'Deep Focus';
+
+    // Capitalize
+    title = title.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    topModeTitle.textContent = title;
 }
 
 function resetTimerToWork() {
@@ -119,14 +129,7 @@ function enterActiveMode() {
     views.selection.classList.add('hidden');
     views.active.classList.remove('hidden');
 
-    // Title Text
-    let title = currentModeKey.replace('_', ' '); // deep_focus -> deep focus
-    if (currentModeKey === 'custom') title = 'Free Mode';
-    if (currentModeKey === 'deep_focus') title = 'Deep Focus';
-
-    title = title.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-    activeModeTitle.textContent = title;
-
+    // Update cycle indicator
     const work = MODES[currentModeKey].work;
     const brk = MODES[currentModeKey].break;
     cycleIndicator.textContent = `${work}-${brk}`;

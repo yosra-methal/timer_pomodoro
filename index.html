@@ -16,6 +16,9 @@
         <!-- Widget Card -->
         <div class="widget-card">
 
+            <!-- NEW: Top Mode Title (Visible in Selection Mode) -->
+            <div id="topModeTitle" class="top-mode-title">Standard</div>
+
             <!-- Shared Timer Display -->
             <div class="timer-section">
                 <div id="digitalTimer" class="digital-timer">25:00</div>
@@ -29,8 +32,6 @@
                     <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8 5V19L19 12L8 5Z" />
                     </svg>
-                    <!-- Background Glow Element -->
-                    <div class="play-halo"></div>
                 </button>
 
                 <!-- Mode Selectors -->
@@ -66,7 +67,11 @@
 
             <!-- View 2: Active Mode -->
             <div id="activeView" class="view-container active-view hidden">
-                <h2 id="activeModeTitle" class="mode-title">Standard</h2>
+                <!-- We hide the top title in active view if we want to show it strictly here? 
+                     Actually user said "title of selected mode display above timer".
+                     Let's keep the one above timer visible always, and maybe hide the one inside Active View 
+                     to avoid duplication, or just let the top one be the main one. -->
+
                 <div id="cycleIndicator" class="cycle-indicator">25-5</div>
                 <div class="controls-sub">
                     <button id="stopBtn" class="stop-btn">Stop</button>

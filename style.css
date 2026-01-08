@@ -7,7 +7,6 @@
     --grad-deep: linear-gradient(135deg, #5856D6, #AF52DE);
     --grad-free: linear-gradient(135deg, #FF9500, #FFCC00);
 
-    /* Current Active Theme */
     --active-gradient: var(--grad-standard);
     --active-color-primary: #007AFF;
 
@@ -36,20 +35,22 @@ body {
 
 .app-container {
     width: 320px;
-    /* User demanded the border back on selection mode ("Remets le contour... sur le mode de sélection").
-       So we apply the gradient background (which acts as border) ALWAYS. */
+    /* Gradient Border Maintained */
     background: var(--active-gradient);
     padding: 2px;
-    /* 2px Border thickness */
-    border-radius: 30px;
-    box-shadow: 0 10px 40px -10px var(--active-color-primary);
-    /* Outer glow always? Or maybe subtle? User asked for "contour" mainly. */
+    border-radius: 32px;
+    /* Slightly nicer rounding for outer */
+
+    /* "Enlève le halo... met une simple ombre." */
+    box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.15);
+    /* Neutral shadow */
     transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .widget-card {
     background: var(--bg-white);
-    border-radius: 28px;
+    border-radius: 30px;
+    /* Matching inner radius */
     padding: 32px 24px;
     display: flex;
     flex-direction: column;
@@ -60,10 +61,25 @@ body {
     background-clip: padding-box;
 }
 
+/* --- Top Title --- */
+.top-mode-title {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+    /* Close to timer */
+
+    /* Colored Text */
+    color: var(--active-color-primary);
+    transition: color 0.3s ease;
+}
+
 /* --- Timer --- */
 .timer-section {
     margin-bottom: 32px;
-    margin-top: 10px;
+    margin-top: 0px;
+    /* Reduced since title is above now */
 }
 
 .digital-timer {
@@ -83,7 +99,6 @@ body {
     background: #FFFFFF;
     position: relative;
 
-    /* Elegant Gradient Border */
     border: 1.5px solid transparent;
     background-image:
         linear-gradient(#FFF, #FFF),
@@ -91,10 +106,8 @@ body {
     background-origin: border-box;
     background-clip: content-box, border-box;
 
-    /* Halo: "réparti autour de façon égal ... pas d'ombre projeté" 
-       Use 0 offset for X and Y. */
+    /* Centered Halo remains as requested previously, user said "Enlève halo autour de l'étiquette (widget)" not button play. */
     box-shadow: 0 0 20px -4px var(--active-color-primary);
-    /* Centered Glow */
 
     color: var(--active-color-primary);
 
@@ -131,8 +144,11 @@ body {
 
     background: #F2F2F7;
     border: 1.5px solid transparent;
-    border-radius: 14px;
-    padding: 12px 0;
+
+    /* "Bords très arrondis" */
+    border-radius: 24px;
+
+    padding: 14px 0;
 
     font-family: var(--font-primary);
     font-weight: 500;
@@ -152,28 +168,25 @@ body {
 /* Selected State */
 .mode-pill.active {
     background: #FFFFFF;
-
-    /* Gradient Border */
     background-image: linear-gradient(#FFF, #FFF), var(--active-gradient);
     background-origin: border-box;
     background-clip: padding-box, border-box;
 
-    /* Halo: "avec un halo de la meme couleur" */
+    /* Halo on Active Pill ? User said "Enlève et met une simple ombre" referring to Widget halo?
+       "Je veux pas de halo autour de l'étiquette entière sur le mode de séléction." -> usually means the whole app container. 
+       "et j'avais bien spécifier que quand un bouton est séléctionner, il doit avoir un liseré ... avec un halo" -> Keep halo on BUTTON.
+       So: App Container = No Halo. Button = Halo. */
     box-shadow: 0 0 15px -4px var(--active-color-primary);
-    /* Centered glow */
 
     color: #000000;
     font-weight: 600;
 }
 
-/* Ensure time details stay subtle but visible */
 .mode-pill.active .time-detail {
     color: var(--text-secondary);
-    /* Keep them grey or maybe primary? Usually metadata is grey. */
-    /* If user wants everything black, we leave it. */
 }
 
-/* --- Other Views/Controls --- */
+/* --- Views --- */
 .view-container {
     width: 100%;
     display: flex;
@@ -255,16 +268,6 @@ body {
 .active-view {
     margin-top: 10px;
     text-align: center;
-}
-
-.mode-title {
-    font-size: 28px;
-    font-weight: 700;
-    background: var(--active-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 8px;
 }
 
 .cycle-indicator {
