@@ -2,24 +2,32 @@ const MODES = {
     standard: {
         work: 25,
         break: 5,
-        gradientVar: '--grad-standard', /* Original Rich */
+        long_break: 20,
+        trigger: 4,
+        gradientVar: '--grad-standard',
         primaryColor: 'var(--text-standard)'
     },
     light: {
         work: 15,
         break: 5,
+        long_break: 15,
+        trigger: 4,
         gradientVar: '--grad-light',
         primaryColor: 'var(--text-light)'
     },
     deep_focus: {
         work: 50,
         break: 10,
+        long_break: 30,
+        trigger: 4,
         gradientVar: '--grad-deep',
         primaryColor: 'var(--text-deep)'
     },
     custom: {
         work: 25,
         break: 5,
+        long_break: 15,
+        trigger: 4,
         gradientVar: '--grad-free',
         primaryColor: 'var(--text-free)'
     }
@@ -191,8 +199,14 @@ let isSoundTriggered = false;
 
 notificationSound.addEventListener('loadedmetadata', () => {
     if (notificationSound.duration && isFinite(notificationSound.duration)) {
-        audioDuration = notificationSound.duration;
+        audioDuration = Math.ceil(notificationSound.duration);
+        console.log('Audio loaded, duration:', audioDuration);
     }
+});
+
+notificationSound.addEventListener('error', (e) => {
+    console.error('Audio failed to load:', e);
+    audioDuration = 3; // Fallback
 });
 
 // State for Cycle
