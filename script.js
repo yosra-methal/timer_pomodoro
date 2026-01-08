@@ -58,9 +58,13 @@ function init() {
 
 function setupListeners() {
     modePills.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const mode = btn.dataset.mode;
-            selectMode(mode);
+        btn.addEventListener('click', (e) => {
+            // Traverse up in case user clicks the span inside button
+            const target = e.target.closest('.mode-pill');
+            if (target) {
+                const mode = target.dataset.mode;
+                selectMode(mode);
+            }
         });
     });
 
@@ -101,7 +105,6 @@ function updateTheme(key) {
     const config = MODES[key];
     const root = document.documentElement;
 
-    // Set Gradient and Primary Color Variables
     root.style.setProperty('--active-gradient', `var(${config.gradientVar})`);
     root.style.setProperty('--active-color-primary', config.primaryColor);
 }
@@ -116,15 +119,11 @@ function enterActiveMode() {
     views.selection.classList.add('hidden');
     views.active.classList.remove('hidden');
 
-    // Add border to main container
-    appContainer.classList.add('border-active');
-
     // Title Text
     let title = currentModeKey.replace('_', ' '); // deep_focus -> deep focus
     if (currentModeKey === 'custom') title = 'Free Mode';
     if (currentModeKey === 'deep_focus') title = 'Deep Focus';
 
-    // Capitalize
     title = title.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
     activeModeTitle.textContent = title;
 
@@ -140,9 +139,6 @@ function exitActiveMode() {
 
     views.active.classList.add('hidden');
     views.selection.classList.remove('hidden');
-
-    // Remove border
-    appContainer.classList.remove('border-active');
 
     resetTimerToWork();
 }

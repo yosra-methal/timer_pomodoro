@@ -26,21 +26,30 @@
 
                 <!-- Play Button (Outlined) -->
                 <button id="startBtn" class="play-btn" aria-label="Start Focus">
-                    <!-- Updated Play Icon -->
                     <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8 5V19L19 12L8 5Z" />
                     </svg>
+                    <!-- Background Glow Element -->
+                    <div class="play-halo"></div>
                 </button>
 
                 <!-- Mode Selectors -->
                 <div class="mode-grid">
-                    <button class="mode-pill active" data-mode="standard">Standard</button>
-                    <button class="mode-pill" data-mode="light">Light</button>
-                    <button class="mode-pill" data-mode="deep_focus">Deep Focus</button>
-                    <button class="mode-pill" data-mode="custom">Free Mode</button>
+                    <button class="mode-pill active" data-mode="standard">
+                        Standard <span class="time-detail">(25-5)</span>
+                    </button>
+                    <button class="mode-pill" data-mode="light">
+                        Light <span class="time-detail">(15-5)</span>
+                    </button>
+                    <button class="mode-pill" data-mode="deep_focus">
+                        Deep Focus <span class="time-detail">(50-10)</span>
+                    </button>
+                    <button class="mode-pill" data-mode="custom">
+                        Free Mode
+                    </button>
                 </div>
 
-                <!-- Custom Sliders (Only visible if Free Mode is selected) -->
+                <!-- Custom Sliders -->
                 <div id="customControls" class="custom-controls hidden">
                     <div class="slider-row">
                         <label>Work</label>
@@ -57,12 +66,8 @@
 
             <!-- View 2: Active Mode -->
             <div id="activeView" class="view-container active-view hidden">
-                <!-- Title of Mode -->
                 <h2 id="activeModeTitle" class="mode-title">Standard</h2>
-
-                <!-- Cycle Indicator -->
                 <div id="cycleIndicator" class="cycle-indicator">25-5</div>
-
                 <div class="controls-sub">
                     <button id="stopBtn" class="stop-btn">Stop</button>
                 </div>

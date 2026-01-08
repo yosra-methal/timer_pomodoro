@@ -7,7 +7,7 @@
     --grad-deep: linear-gradient(135deg, #5856D6, #AF52DE);
     --grad-free: linear-gradient(135deg, #FF9500, #FFCC00);
 
-    /* Variable placeholders updated by JS */
+    /* Current Active Theme */
     --active-gradient: var(--grad-standard);
     --active-color-primary: #007AFF;
 
@@ -36,18 +36,15 @@ body {
 
 .app-container {
     width: 320px;
-    padding: 2px;
-    /* For the outer gradient border when active */
-    border-radius: 30px;
-    background: transparent;
-    transition: background 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* Active State: Outer Gradient Border & Glow */
-.app-container.border-active {
+    /* User demanded the border back on selection mode ("Remets le contour... sur le mode de sélection").
+       So we apply the gradient background (which acts as border) ALWAYS. */
     background: var(--active-gradient);
+    padding: 2px;
+    /* 2px Border thickness */
+    border-radius: 30px;
     box-shadow: 0 10px 40px -10px var(--active-color-primary);
-    /* Halo */
+    /* Outer glow always? Or maybe subtle? User asked for "contour" mainly. */
+    transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .widget-card {
@@ -78,40 +75,28 @@ body {
     line-height: 1;
 }
 
-/* --- Views --- */
-.view-container {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: opacity 0.3s ease;
-}
-
-.hidden {
-    display: none !important;
-}
-
-/* Play Button: Fine & Elegant */
+/* --- Play Button --- */
 .play-btn {
     width: 72px;
     height: 72px;
     border-radius: 50%;
     background: #FFFFFF;
+    position: relative;
 
-    /* Elegant Gradient Border via transparent border + background trick */
+    /* Elegant Gradient Border */
     border: 1.5px solid transparent;
-    /* Fine width */
     background-image:
         linear-gradient(#FFF, #FFF),
         var(--active-gradient);
     background-origin: border-box;
     background-clip: content-box, border-box;
 
-    /* Halo/Glow */
-    box-shadow: 0 8px 20px -6px var(--active-color-primary);
+    /* Halo: "réparti autour de façon égal ... pas d'ombre projeté" 
+       Use 0 offset for X and Y. */
+    box-shadow: 0 0 20px -4px var(--active-color-primary);
+    /* Centered Glow */
 
     color: var(--active-color-primary);
-    /* Icon Color */
 
     cursor: pointer;
     display: flex;
@@ -126,12 +111,10 @@ body {
 }
 
 .play-btn svg path {
-    fill: url(#gradient-icon);
-    /* If we want gradient fill in SVG, complex. Fallback to currentcolor */
     fill: var(--active-color-primary);
 }
 
-/* Mode Grid */
+/* --- Mode Grid --- */
 .mode-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -140,40 +123,69 @@ body {
 }
 
 .mode-pill {
-    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+
     background: #F2F2F7;
     border: 1.5px solid transparent;
-    /* Placeholder for border */
     border-radius: 14px;
     padding: 12px 0;
+
     font-family: var(--font-primary);
     font-weight: 500;
     font-size: 13px;
     color: #000000;
-    /* Always black text */
+
     cursor: pointer;
     transition: all 0.2s ease;
-    overflow: hidden;
 }
 
-/* Selected State: Gradient Border + Halo + Black Text */
+.time-detail {
+    font-size: 10px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* Selected State */
 .mode-pill.active {
     background: #FFFFFF;
 
-    /* Gradient Border Trick */
+    /* Gradient Border */
     background-image: linear-gradient(#FFF, #FFF), var(--active-gradient);
     background-origin: border-box;
     background-clip: padding-box, border-box;
 
-    /* Halo */
-    box-shadow: 0 4px 15px -4px var(--active-color-primary);
+    /* Halo: "avec un halo de la meme couleur" */
+    box-shadow: 0 0 15px -4px var(--active-color-primary);
+    /* Centered glow */
 
-    /* Ensure text is black */
     color: #000000;
     font-weight: 600;
 }
 
-/* Custom/Free Mode Inputs */
+/* Ensure time details stay subtle but visible */
+.mode-pill.active .time-detail {
+    color: var(--text-secondary);
+    /* Keep them grey or maybe primary? Usually metadata is grey. */
+    /* If user wants everything black, we leave it. */
+}
+
+/* --- Other Views/Controls --- */
+.view-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: opacity 0.3s ease;
+}
+
+.hidden {
+    display: none !important;
+}
+
 .custom-controls {
     width: 100%;
     margin-top: 24px;
@@ -240,8 +252,6 @@ body {
     color: var(--text-primary);
 }
 
-
-/* --- Active View --- */
 .active-view {
     margin-top: 10px;
     text-align: center;
@@ -250,7 +260,6 @@ body {
 .mode-title {
     font-size: 28px;
     font-weight: 700;
-    /* Gradient Text */
     background: var(--active-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -280,5 +289,4 @@ body {
 .stop-btn:hover {
     background: #E5E5EA;
     color: #FF3B30;
-    /* Red for stop hint */
 }
