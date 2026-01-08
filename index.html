@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Widget</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- The main widget card -->
+        <div class="widget-card" id="widgetCard">
+            <!-- Top Controls: Mode Switcher -->
+            <nav class="mode-selector">
+                <button class="mode-btn active" data-mode="standard">Standard</button>
+                <button class="mode-btn" data-mode="light">Light</button>
+                <button class="mode-btn" data-mode="deep_focus">Focus</button>
+                <button class="mode-btn" data-mode="custom">Custom</button>
+            </nav>
+            
+            <!-- Center: Timer Display -->
+            <div class="timer-display-container">
+                <div id="digitalTimer" class="digital-timer">25:00</div>
+                
+                <!-- Custom Sliders (Hidden by default) -->
+                <div id="customControls" class="custom-controls hidden">
+                    <div class="slider-group">
+                        <label>Work</label>
+                        <input type="range" id="workSlider" min="5" max="90" value="25">
+                        <span id="workValue">25m</span>
+                    </div>
+                    <div class="slider-group">
+                        <label>Break</label>
+                        <input type="range" id="breakSlider" min="1" max="30" value="5">
+                        <span id="breakValue">5m</span>
+                    </div>
+                </div>
+
+                <div class="status-label" id="statusLabel">Focus</div>
+            </div>
+
+            <!-- Bottom: Play/Pause Control -->
+            <div class="control-area">
+                <button id="mainActionBtn" class="action-btn" aria-label="Start Timer">
+                    <!-- Play Icon -->
+                    <svg class="icon-play" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 6V18L17 12L7 6Z" fill="white"/>
+                    </svg>
+                    <!-- Pause Icon (Hidden) -->
+                    <svg class="icon-pause hidden" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="7" y="6" width="4" height="12" rx="1" fill="white"/>
+                        <rect x="13" y="6" width="4" height="12" rx="1" fill="white"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

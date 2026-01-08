@@ -1,0 +1,216 @@
+/* CSS Reset & Variables */
+:root {
+    --bg-white: #FFFFFF;
+    
+    /* Gradients */
+    --grad-standard-start: #007AFF;
+    --grad-standard-end: #00C6FF;
+    
+    --grad-light-start: #28CD41;
+    --grad-light-end: #87EE85;
+    
+    --grad-deep-start: #AF52DE;
+    --grad-deep-end: #D5A3FF;
+    
+    --grad-custom-start: #FF9500;
+    --grad-custom-end: #FFCC00;
+
+    /* Active State (Defaults to Standard) */
+    --active-grad-start: var(--grad-standard-start);
+    --active-grad-end: var(--grad-standard-end);
+    
+    --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --ease-spring: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+body {
+    font-family: var(--font-primary);
+    background-color: transparent; /* Outer background transparent */
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* App Container */
+.app-container {
+    width: 320px;
+    padding: 2px; /* Space for the gradient border */
+    position: relative;
+    border-radius: 30px; /* 28px inner + 2px border */
+    /* Dynamic gradient border via background */
+    background: linear-gradient(135deg, var(--active-grad-start), var(--active-grad-end));
+    box-shadow: 0 20px 60px -10px rgba(0, 122, 255, 0.5); /* Dynamic color here via JS/Variables technically hard to transition alpha without specific prop, will use opacity trick or RGBA update */
+    transition: background 0.5s ease, box-shadow 0.5s ease;
+}
+
+/* To achieve the perfect "glow" matching the gradient, we update the shadow color via JS or specific variable if supported. 
+   For now, we will use a variable for the shadow color. */
+.app-container {
+    --shadow-color: rgba(0, 122, 255, 0.5);
+    box-shadow: 0 16px 40px -12px var(--shadow-color);
+}
+
+/* The Widget Card */
+.widget-card {
+    background: var(--bg-white);
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
+    border-radius: 28px; /* High-end Squircle approximation */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 20px;
+    position: relative;
+    z-index: 2;
+}
+
+/* Mode Selector (Top) */
+.mode-selector {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    background: #F2F2F7;
+    padding: 4px;
+    border-radius: 16px;
+    margin-bottom: 32px;
+}
+
+.mode-btn {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 8px 0;
+    font-family: var(--font-primary);
+    font-size: 12px;
+    font-weight: 600;
+    color: #8E8E93;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s var(--ease-spring);
+    position: relative;
+}
+
+.mode-btn.active {
+    background: #FFFFFF;
+    color: #000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08); 
+    /* The active border requested in specs: "Blue border active" for standard, etc. 
+       Actually specs say: "Default selection: 'Standard' (Blue border active)."
+       We will color the text or a small inset border to match the mode. */
+    color: var(--active-grad-start); 
+}
+
+/* Center Timer */
+.timer-display-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.digital-timer {
+    font-size: 64px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -2px;
+    color: #1C1C1E;
+    margin-bottom: 8px;
+    transition: opacity 0.3s ease;
+}
+
+.status-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #8E8E93;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Custom Controls (Hidden) */
+.custom-controls {
+    width: 100%;
+    padding: 0 10px;
+    margin-bottom: 20px;
+}
+
+.custom-controls.hidden {
+    display: none;
+}
+
+.slider-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.slider-group label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #8E8E93;
+    width: 40px;
+}
+
+.slider-group input[type=range] {
+    flex: 1;
+    accent-color: var(--active-grad-start);
+}
+
+.slider-group span {
+    font-size: 12px;
+    color: #1C1C1E;
+    width: 30px;
+    text-align: right;
+}
+
+/* Bottom Controls */
+.control-area {
+    margin-top: auto;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 10px;
+}
+
+.action-btn {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(135deg, var(--active-grad-start), var(--active-grad-end));
+    cursor: pointer;
+    box-shadow: 0 10px 20px -8px var(--shadow-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s var(--ease-spring), box-shadow 0.2s;
+}
+
+.action-btn:hover {
+    transform: scale(1.05);
+}
+
+.action-btn:active {
+    transform: scale(0.95);
+}
+
+.action-btn svg {
+    display: block;
+}
+
+.hidden {
+    display: none !important;
+}
