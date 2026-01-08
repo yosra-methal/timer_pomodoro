@@ -243,7 +243,7 @@ function startTimer() {
         } else {
             // Timer reached 0
             clearInterval(timerInterval);
-            // Don't stop isRunning yet, we are transitioning
+            isRunning = false; // CRITICAL: Must set to false to allow restart
             handleSessionEnd();
         }
     }, 1000);
