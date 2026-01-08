@@ -57,6 +57,22 @@ body {
 }
 
 .widget-card {
+    /* Milky / Washed Out Gradients (High Brightness, Low Saturation) */
+    --grad-standard-milky: linear-gradient(135deg, #D4E5FF 0%, #EBF5FF 100%);
+    /* Milky Blue */
+    --grad-light-milky: linear-gradient(135deg, #E8F7E3 0%, #F1FCEF 100%);
+    /* Milky Green */
+    --grad-deep-milky: linear-gradient(135deg, #F0E6FA 0%, #F7F0FF 100%);
+    /* Milky Purple */
+    --grad-free-milky: linear-gradient(135deg, #FFF0D9 0%, #FFF8E6 100%);
+    /* Milky Orange */
+
+    /* Original Pastels for Text/Accents (Kept for reference if needed, but not used for BG now) */
+    --text-standard: #6495ED;
+    --text-light: #66BB6A;
+    --text-deep: #9575CD;
+    --text-free: #FFA726;
+
     background: var(--bg-white);
     border-radius: 30px;
     padding: 30px 20px;
@@ -98,11 +114,13 @@ body {
 .flip-separator {
     font-size: 40px;
     font-weight: 700;
-    color: var(--active-color-primary);
-    /* Matches the theme color */
+    color: #FFFFFF;
+    /* White to match digits per "Refined Aesthetic" */
     margin: 0 4px;
     padding-bottom: 8px;
     /* Alignment adjustment */
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    /* Shadow for legibility */
     transition: color 0.3s ease;
 }
 
@@ -117,6 +135,8 @@ body {
     text-align: center;
     color: #FFFFFF;
     /* Pure White Numbers */
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    /* Essential for contrast on milky bg */
     transition: color 0.3s ease;
 }
 
