@@ -17,7 +17,8 @@
     --text-standard: #6495ED;
     --text-light: #66BB6A;
     --text-deep: #9575CD;
-    --text-free: #FFA726;
+    --text-free: #FF9F80;
+    /* Salmon Pastel Orange */
 
     /* Active Variable placeholders */
     --active-gradient: var(--grad-standard);
@@ -466,9 +467,6 @@ body {
 }
 
 .cycle-indicator {
-    font-size: 20px;
-    font-weight: 500;
-    color: #8E8E93;
-    margin-bottom: 24px;
-    /* Reduced from 48px */
+    display: none !important;
+    /* "Get off the numbers" */
 }
