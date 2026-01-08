@@ -132,6 +132,7 @@ function resetTimerToWork() {
 function enterActiveMode() {
     views.selection.classList.add('hidden');
     views.active.classList.remove('hidden');
+    appContainer.classList.add('mode-active'); // Enable centered layout
 
     const work = MODES[currentModeKey].work;
     const brk = MODES[currentModeKey].break;
@@ -146,6 +147,7 @@ function exitActiveMode() {
     stopTimer();
     views.active.classList.add('hidden');
     views.selection.classList.remove('hidden');
+    appContainer.classList.remove('mode-active'); // Disable centered layout
     resetTimerToWork();
 }
 

@@ -134,7 +134,7 @@ body {
 }
 
 /* Active Mode: Center content vertically for better focus */
-.app-container.border-active .widget-card {
+.app-container.mode-active .widget-card {
     justify-content: center;
 }
 
