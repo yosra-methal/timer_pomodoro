@@ -1,19 +1,29 @@
 :root {
     --bg-white: #FFFFFF;
 
-    /* Vibrant Gradients */
-    --grad-standard: linear-gradient(135deg, #007AFF, #5AC8FA);
-    --grad-light: linear-gradient(135deg, #34C759, #30D158);
-    --grad-deep: linear-gradient(135deg, #5856D6, #AF52DE);
-    --grad-free: linear-gradient(135deg, #FF9500, #FFCC00);
+    /* Copied Gradients from Reference "widget respiration copie/src/index.css" */
+    --grad-grounding: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+    /* Sky Blue */
+    --grad-calm: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+    /* Mint Green */
+    --grad-focus: linear-gradient(135deg, #fccb90 0%, #d57eeb 100%);
+    /* Peach/Purple */
+    --grad-sleep: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+    /* Lavender */
 
-    --active-gradient: var(--grad-standard);
-    --active-color-primary: #007AFF;
+    /* Text Colors from Reference "widget respiration copie/src/constants.js" */
+    --text-grounding: #365c7d;
+    --text-calm: #2e7d32;
+    --text-focus: #d84315;
+    --text-sleep: #4527a0;
 
-    --text-primary: #000000;
-    --text-secondary: #8E8E93;
+    /* Active Variable placeholders */
+    --active-gradient: var(--grad-grounding);
+    --active-color-primary: var(--text-grounding);
 
-    --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --text-primary: #2c3e50;
+    /* from reference */
+    --font-primary: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
 * {
@@ -31,27 +41,24 @@ body {
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    color: var(--text-primary);
 }
 
 .app-container {
     width: 320px;
-    /* Gradient Border Maintained */
     background: var(--active-gradient);
     padding: 2px;
     border-radius: 32px;
-    /* Slightly nicer rounding for outer */
-
-    /* "Enlève le halo... met une simple ombre." */
-    box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.15);
-    /* Neutral shadow */
-    transition: background 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+    /* Reference shadow style */
+    transition: background 0.3s ease;
 }
 
 .widget-card {
     background: var(--bg-white);
     border-radius: 30px;
-    /* Matching inner radius */
-    padding: 32px 24px;
+    padding: 30px 20px;
+    /* Reference padding */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -61,12 +68,11 @@ body {
     background-clip: padding-box;
 }
 
-/* --- Top Title --- */
+/* --- Top Title (Format from "mode-label" reference implies title should be clear) --- */
 .top-mode-title {
     font-size: 32px;
     font-weight: 800;
     text-transform: capitalize;
-    /* user might prefer normal case if it's huge, but let's stick to spec or capitalize */
     letter-spacing: -0.5px;
     margin-bottom: 0px;
     line-height: 1.2;
@@ -78,9 +84,8 @@ body {
 
 /* --- Timer --- */
 .timer-section {
-    margin-bottom: 32px;
+    margin-bottom: 30px;
     margin-top: 0px;
-    /* Reduced since title is above now */
 }
 
 .digital-timer {
@@ -92,7 +97,7 @@ body {
     line-height: 1;
 }
 
-/* --- Play Button --- */
+/* --- Play Button (Keeping the established Pomodoro functional style but adapting colors) --- */
 .play-btn {
     width: 72px;
     height: 72px;
@@ -107,7 +112,6 @@ body {
     background-origin: border-box;
     background-clip: content-box, border-box;
 
-    /* Centered Halo remains as requested previously, user said "Enlève halo autour de l'étiquette (widget)" not button play. */
     box-shadow: 0 0 20px -4px var(--active-color-primary);
 
     color: var(--active-color-primary);
@@ -116,7 +120,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
@@ -128,14 +132,26 @@ body {
     fill: var(--active-color-primary);
 }
 
-/* --- Mode Grid --- */
+/* --- Mode Inputs Grid (Grid Layout from reference: 2 rows of 2) --- */
 .mode-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 12px;
+    /* Reference uses gap: 8px to 12px visually */
     width: 100%;
+    margin-bottom: 15px;
 }
 
+/* Buttons Reference Style: 
+   .mode-row button {
+       border-radius: 18px; 
+       height: 40px; 
+       font-size: 0.85rem (approx 13px);
+       padding: 0 12px;
+       border: 2px solid transparent;    
+       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+   }
+*/
 .mode-pill {
     display: flex;
     flex-direction: column;
@@ -143,18 +159,22 @@ body {
     justify-content: center;
     gap: 2px;
 
-    background: #F2F2F7;
-    border: 1.5px solid transparent;
+    background: #FFFFFF;
+    /* Reference buttons often white/light */
+    border: 2px solid transparent;
 
-    /* "Bords très arrondis" */
-    border-radius: 24px;
+    border-radius: 18px;
+    /* Strict Reference match */
+    height: 50px;
+    /* Slightly taller for 2 lines of text */
 
-    padding: 14px 0;
+    /* Reference Box Shadow */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
 
     font-family: var(--font-primary);
     font-weight: 500;
     font-size: 13px;
-    color: #000000;
+    color: var(--text-primary);
 
     cursor: pointer;
     transition: all 0.2s ease;
@@ -162,29 +182,23 @@ body {
 
 .time-detail {
     font-size: 10px;
-    color: var(--text-secondary);
+    color: #8E8E93;
     font-weight: 500;
 }
 
 /* Selected State */
 .mode-pill.active {
     background: #FFFFFF;
+
+    /* Gradient Border from Ref */
     background-image: linear-gradient(#FFF, #FFF), var(--active-gradient);
     background-origin: border-box;
     background-clip: padding-box, border-box;
 
-    /* Halo on Active Pill ? User said "Enlève et met une simple ombre" referring to Widget halo?
-       "Je veux pas de halo autour de l'étiquette entière sur le mode de séléction." -> usually means the whole app container. 
-       "et j'avais bien spécifier que quand un bouton est séléctionner, il doit avoir un liseré ... avec un halo" -> Keep halo on BUTTON.
-       So: App Container = No Halo. Button = Halo. */
-    box-shadow: 0 0 15px -4px var(--active-color-primary);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 
-    color: #000000;
+    color: var(--text-primary);
     font-weight: 600;
-}
-
-.mode-pill.active .time-detail {
-    color: var(--text-secondary);
 }
 
 /* --- Views --- */
@@ -202,7 +216,7 @@ body {
 
 .custom-controls {
     width: 100%;
-    margin-top: 24px;
+    margin-top: 15px;
     padding: 0 4px;
     animation: slideDown 0.3s ease;
 }
@@ -223,13 +237,14 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
 }
 
 .slider-row label {
     font-size: 13px;
     font-weight: 600;
-    color: var(--text-secondary);
+    color: #666;
+    /* Reference grey */
     width: 50px;
 }
 
@@ -241,21 +256,24 @@ body {
 
 .slider-row input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
-    height: 20px;
-    width: 20px;
+    height: 18px;
+    width: 18px;
     border-radius: 50%;
     background: #FFFFFF;
+    /* Reference white thumb */
     border: 0.5px solid rgba(0, 0, 0, 0.1);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-    margin-top: -8px;
+    margin-top: -7px;
+    /* Align center on 4px track */
     cursor: pointer;
 }
 
 .slider-row input[type=range]::-webkit-slider-runnable-track {
     width: 100%;
     height: 4px;
-    background: #E5E5EA;
-    border-radius: 2px;
+    /* Reference 6px -> 4px */
+    background: #eee;
+    border-radius: 5px;
 }
 
 .slider-row span {
@@ -274,23 +292,25 @@ body {
 .cycle-indicator {
     font-size: 20px;
     font-weight: 500;
-    color: var(--text-secondary);
+    color: #8E8E93;
     margin-bottom: 48px;
 }
 
 .stop-btn {
-    background: #F2F2F7;
+    width: 100%;
+    margin-top: 10px;
+    padding: 12px 30px;
     border: none;
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--text-primary);
+    border-radius: 25px;
+    background: #2c3e50;
+    /* Reference dark button */
+    color: white;
+    font-size: 1rem;
     cursor: pointer;
-    padding: 12px 32px;
-    border-radius: 24px;
+    letter-spacing: 1px;
     transition: all 0.2s;
 }
 
 .stop-btn:hover {
-    background: #E5E5EA;
-    color: #FF3B30;
+    opacity: 0.9;
 }

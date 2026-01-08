@@ -2,26 +2,30 @@ const MODES = {
     standard: {
         work: 25,
         break: 5,
-        gradientVar: '--grad-standard',
-        primaryColor: '#007AFF'
+        // Renaming to match "Grounding" (Blue) vibe from ref
+        gradientVar: '--grad-grounding',
+        primaryColor: 'var(--text-grounding)'
     },
     light: {
         work: 15,
         break: 5,
-        gradientVar: '--grad-light',
-        primaryColor: '#34C759'
+        // Renaming to match "Calm" (Green) vibe from ref
+        gradientVar: '--grad-calm',
+        primaryColor: 'var(--text-calm)'
     },
     deep_focus: {
         work: 50,
         break: 10,
-        gradientVar: '--grad-deep',
-        primaryColor: '#5856D6'
+        // Renaming to match "Focus" (Peach/Orange) vibe from ref
+        gradientVar: '--grad-focus',
+        primaryColor: 'var(--text-focus)'
     },
     custom: {
         work: 25,
         break: 5,
-        gradientVar: '--grad-free',
-        primaryColor: '#FF9500'
+        // Renaming to match "Sleep" (Purple) vibe from ref
+        gradientVar: '--grad-sleep',
+        primaryColor: 'var(--text-sleep)'
     }
 };
 
@@ -37,7 +41,7 @@ const views = {
     active: document.getElementById('activeView')
 };
 const timerDisplay = document.getElementById('digitalTimer');
-const topModeTitle = document.getElementById('topModeTitle'); // NEW
+const topModeTitle = document.getElementById('topModeTitle');
 const startBtn = document.getElementById('startBtn');
 const stopBtn = document.getElementById('stopBtn');
 const modePills = document.querySelectorAll('.mode-pill');
@@ -110,12 +114,21 @@ function updateTheme(key) {
 }
 
 function updateTitleText(key) {
-    let title = key.replace('_', ' ');
-    if (key === 'custom') title = 'Free Mode';
-    if (key === 'deep_focus') title = 'Deep Focus';
+    // Map internal keys to Display Titles if needed, or just format
+    // Ref: "Grounding", "Calm & Rest", "Focus", "Sleep & Relax"
+    // We map our Pomodoro keys to these names or keep "Standard" etc?
+    // User said: "Reprends les TITRES" (Recover titles from reference)
+    // So we map: Standard->Grounding, Light->Calm, Deep Focus->Focus, Custom->Sleep? 
+    // Or we keep Pomodoro semantics but apply Ref styling? 
+    // "Je veux que tu reprennes les titres... exactment comme dans le dossier"
+    // Okay, rewriting titles to match reference exactly.
 
-    // Capitalize
-    title = title.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    let title = '';
+    if (key === 'standard') title = 'Grounding';
+    if (key === 'light') title = 'Calm & Rest';
+    if (key === 'deep_focus') title = 'Focus';
+    if (key === 'custom') title = 'Sleep & Relax'; // Or "Free Mode" mapped to Sleep colors? 
+
     topModeTitle.textContent = title;
 }
 
@@ -129,7 +142,6 @@ function enterActiveMode() {
     views.selection.classList.add('hidden');
     views.active.classList.remove('hidden');
 
-    // Update cycle indicator
     const work = MODES[currentModeKey].work;
     const brk = MODES[currentModeKey].break;
     cycleIndicator.textContent = `${work}-${brk}`;

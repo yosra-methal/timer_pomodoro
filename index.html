@@ -16,8 +16,8 @@
         <!-- Widget Card -->
         <div class="widget-card">
 
-            <!-- NEW: Top Mode Title (Visible in Selection Mode) -->
-            <div id="topModeTitle" class="top-mode-title">Standard</div>
+            <!-- Top Mode Title (Dynamic) -->
+            <div id="topModeTitle" class="top-mode-title">Grounding</div>
 
             <!-- Shared Timer Display -->
             <div class="timer-section">
@@ -27,26 +27,26 @@
             <!-- View 1: Selection Mode -->
             <div id="selectionView" class="view-container selection-view">
 
-                <!-- Play Button (Outlined) -->
-                <button id="startBtn" class="play-btn" aria-label="Start Focus">
+                <!-- Play Button -->
+                <button id="startBtn" class="play-btn" aria-label="Start">
                     <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8 5V19L19 12L8 5Z" />
                     </svg>
                 </button>
 
-                <!-- Mode Selectors -->
+                <!-- Mode Selectors (Titles matched to reference) -->
                 <div class="mode-grid">
                     <button class="mode-pill active" data-mode="standard">
-                        Standard <span class="time-detail">(25-5)</span>
+                        Grounding <span class="time-detail">(25-5)</span>
                     </button>
                     <button class="mode-pill" data-mode="light">
-                        Light <span class="time-detail">(15-5)</span>
+                        Calm & Rest <span class="time-detail">(15-5)</span>
                     </button>
                     <button class="mode-pill" data-mode="deep_focus">
-                        Deep Focus <span class="time-detail">(50-10)</span>
+                        Focus <span class="time-detail">(50-10)</span>
                     </button>
                     <button class="mode-pill" data-mode="custom">
-                        Free Mode
+                        Sleep & Relax
                     </button>
                 </div>
 
@@ -67,11 +67,6 @@
 
             <!-- View 2: Active Mode -->
             <div id="activeView" class="view-container active-view hidden">
-                <!-- We hide the top title in active view if we want to show it strictly here? 
-                     Actually user said "title of selected mode display above timer".
-                     Let's keep the one above timer visible always, and maybe hide the one inside Active View 
-                     to avoid duplication, or just let the top one be the main one. -->
-
                 <div id="cycleIndicator" class="cycle-indicator">25-5</div>
                 <div class="controls-sub">
                     <button id="stopBtn" class="stop-btn">Stop</button>
