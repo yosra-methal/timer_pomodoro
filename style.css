@@ -195,7 +195,7 @@ body {
     gap: 2px;
     background: #FFFFFF;
     border: 2px solid transparent;
-    border-radius: 18px;
+    border-radius: 28px;
     height: 50px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
     font-family: var(--font-primary);
