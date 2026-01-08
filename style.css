@@ -1,20 +1,26 @@
 :root {
     --bg-white: #FFFFFF;
 
-    /* Colors */
-    --color-blue: #007AFF;
-    --color-green: #34C759;
-    --color-purple: #AF52DE;
-    --color-orange: #FF9500;
+    /* Gradients */
+    --grad-standard: linear-gradient(135deg, #007AFF 0%, #00C6FF 100%);
+    --grad-light: linear-gradient(135deg, #28CD41 0%, #87EE85 100%);
+    --grad-deep: linear-gradient(135deg, #AF52DE 0%, #D5A3FF 100%);
+    --grad-free: linear-gradient(135deg, #FF9500 0%, #FFCC00 100%);
+
+    /* Solid colors for text fallback or borders */
+    --col-standard: #007AFF;
+    --col-light: #28CD41;
+    --col-deep: #AF52DE;
+    --col-free: #FF9500;
 
     --text-primary: #1C1C1E;
     --text-secondary: #8E8E93;
 
-    /* Current Active Theme Color - Default Blue */
-    --theme-color: var(--color-blue);
+    /* Active Theme Variables */
+    --active-gradient: var(--grad-standard);
+    --active-color: var(--col-standard);
 
     --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 * {
@@ -35,11 +41,21 @@ body {
 }
 
 .app-container {
-    width: 300px;
-    /* Compact widget */
-    position: relative;
-    /* Optional: Drop shadow for the widget itself if background is invisible */
-    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.1));
+    width: 320px;
+    padding: 3px;
+    /* Space for the gradient border */
+    border-radius: 31px;
+    /* 28px + 3px */
+    background: transparent;
+    /* Default transparent */
+    transition: background 0.5s ease;
+}
+
+/* When active, show the gradient border around the whole card */
+.app-container.border-active {
+    background: var(--active-gradient);
+    box-shadow: 0 10px 40px -10px var(--active-color);
+    /* Glow */
 }
 
 .widget-card {
@@ -49,64 +65,70 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 380px;
+    width: 100%;
+    min-height: 400px;
     position: relative;
-    transition: all 0.4s ease;
+    /* Ensure white background covers the inner part so gradient is only a border */
+    background-clip: padding-box;
 }
 
 /* --- Shared Timer Section --- */
 .timer-section {
     margin-bottom: 24px;
-    z-index: 10;
+    margin-top: 10px;
 }
 
 .digital-timer {
     font-size: 64px;
     font-weight: 800;
-    /* Bolder as requested implies cleaner, modern look */
     color: var(--text-primary);
     font-variant-numeric: tabular-nums;
     letter-spacing: -2px;
     line-height: 1;
-    transition: transform 0.4s ease;
 }
 
-/* --- Views Management --- */
+/* --- Selection View --- */
 .view-container {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition: opacity 0.3s ease;
 }
 
 .hidden {
     display: none !important;
-    opacity: 0;
-    pointer-events: none;
 }
 
-/* --- Selection View Elements --- */
+/* Play Button - Outline Style */
 .play-btn {
     width: 72px;
     height: 72px;
     border-radius: 50%;
-    border: none;
-    background: var(--theme-color);
-    box-shadow: 0 10px 20px -8px var(--theme-color);
-    /* Glow matches theme */
+    background: transparent;
+
+    /* The Border is the gradient or solid color */
+    border: 3px solid var(--active-color);
+    color: var(--active-color);
+    /* Icon takes this color */
+
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 32px;
-    transition: transform 0.2s var(--ease-spring), background 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.play-btn:active {
-    transform: scale(0.9);
+.play-btn:hover {
+    transform: scale(1.05);
 }
 
+.play-btn svg path {
+    fill: currentColor;
+}
+
+/* Mode Grid */
 .mode-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -116,9 +138,9 @@ body {
 
 .mode-pill {
     background: #F2F2F7;
-    border: 2px solid transparent;
-    border-radius: 16px;
-    padding: 12px 0;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 0;
     font-family: var(--font-primary);
     font-weight: 600;
     font-size: 13px;
@@ -133,100 +155,108 @@ body {
 
 .mode-pill.active {
     background: #FFFFFF;
-    color: var(--theme-color);
-    border-color: var(--theme-color);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    color: var(--text-primary);
+    /* "Liseré" around the selected mode pill? Or just style it to look selected.
+       Standard iOS style is usually white bg with shadow or color text.
+       User asked for "Liseré" around the "Active View" title, but let's make the active pill distinct too. 
+       Let's stick to a clean look: Black text, maybe subtle shadow. */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    color: var(--active-color);
 }
 
 /* Custom Sliders */
 .custom-controls {
     width: 100%;
-    margin-top: 16px;
-    background: #F9F9F9;
-    padding: 12px;
-    border-radius: 16px;
+    margin-top: 20px;
+    padding: 0 8px;
 }
 
 .slider-row {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 8px;
-}
-
-.slider-row:last-child {
-    margin-bottom: 0;
+    gap: 12px;
+    margin-bottom: 12px;
 }
 
 .slider-row label {
-    font-size: 11px;
-    font-weight: 700;
+    font-size: 12px;
+    font-weight: 600;
     color: var(--text-secondary);
-    width: 16px;
+    width: 40px;
 }
 
-.slider-row input {
+.slider-row input[type=range] {
     flex: 1;
-    accent-color: var(--theme-color);
+    -webkit-appearance: none;
+    /* Override default look */
+    background: transparent;
+}
+
+/* Standard Slider Styling */
+.slider-row input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    border: 1px solid #0000000D;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    margin-top: -7px;
+    cursor: pointer;
+}
+
+.slider-row input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 4px;
+    background: #E5E5EA;
+    border-radius: 2px;
 }
 
 .slider-row span {
-    font-size: 11px;
+    font-size: 12px;
     width: 20px;
     text-align: right;
-    font-variant-numeric: tabular-nums;
+    color: var(--text-primary);
 }
 
-/* --- Active View Elements --- */
+/* --- Active View --- */
 .active-view {
     margin-top: 10px;
-    animation: fadeIn 0.5s ease forwards;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    /* User said: "border around the étiquette on the second mode".
+       We are putting the border on the main app container for the 'Active View' state.
+       But we can also style the Title specifically if needed. */
 }
 
 .mode-title {
     font-size: 24px;
     font-weight: 700;
-    color: var(--theme-color);
-    /* This matches the request "Title ... of the same color" */
+    background: var(--active-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    /* Fallback */
     margin-bottom: 8px;
-    letter-spacing: -0.5px;
-    text-transform: capitalize;
 }
 
 .cycle-indicator {
     font-size: 18px;
     font-weight: 500;
     color: var(--text-secondary);
-    margin-bottom: 32px;
-    letter-spacing: 0.5px;
+    margin-bottom: 40px;
 }
 
 .text-btn {
-    background: none;
+    background: #F2F2F7;
     border: none;
     font-size: 14px;
     font-weight: 600;
-    color: var(--text-secondary);
+    color: var(--text-primary);
     cursor: pointer;
-    padding: 8px 16px;
+    padding: 10px 24px;
     border-radius: 20px;
-    transition: color 0.2s;
+    transition: background 0.2s;
 }
 
 .text-btn:hover {
-    color: #FF3B30;
-    /* Red on hover indicating Stop */
-    background: rgba(0, 0, 0, 0.03);
+    background: #E5E5EA;
 }

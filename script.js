@@ -2,22 +2,26 @@ const MODES = {
     standard: {
         work: 25,
         break: 5,
-        color: '#007AFF' // Blue
+        gradientVar: '--grad-standard',
+        colorVar: '--col-standard'
     },
     light: {
         work: 15,
         break: 5,
-        color: '#34C759' // Green
+        gradientVar: '--grad-light',
+        colorVar: '--col-light'
     },
     deep_focus: {
         work: 50,
         break: 10,
-        color: '#AF52DE' // Purple
+        gradientVar: '--grad-deep',
+        colorVar: '--col-deep'
     },
     custom: {
         work: 25,
         break: 5,
-        color: '#FF9500' // Orange
+        gradientVar: '--grad-free',
+        colorVar: '--col-free'
     }
 };
 
@@ -27,6 +31,7 @@ let timeLeft = MODES.standard.work * 60;
 let isRunning = false;
 
 // DOM
+const appContainer = document.getElementById('appContainer');
 const views = {
     selection: document.getElementById('selectionView'),
     active: document.getElementById('activeView')
@@ -48,11 +53,10 @@ const breakValDisplay = document.getElementById('breakValueDisplay');
 function init() {
     setupListeners();
     updateTheme(currentModeKey);
-    updateTimerDisplay(); // Show initial 25:00
+    updateTimerDisplay();
 }
 
 function setupListeners() {
-    // Mode Selection
     modePills.forEach(btn => {
         btn.addEventListener('click', () => {
             const mode = btn.dataset.mode;
@@ -60,17 +64,9 @@ function setupListeners() {
         });
     });
 
-    // Start
-    startBtn.addEventListener('click', () => {
-        enterActiveMode();
-    });
+    startBtn.addEventListener('click', enterActiveMode);
+    stopBtn.addEventListener('click', exitActiveMode);
 
-    // Stop / Reset
-    stopBtn.addEventListener('click', () => {
-        exitActiveMode();
-    });
-
-    // Custom Sliders
     workSlider.addEventListener('input', (e) => {
         MODES.custom.work = parseInt(e.target.value);
         workValDisplay.textContent = MODES.custom.work;
@@ -80,33 +76,38 @@ function setupListeners() {
     breakSlider.addEventListener('input', (e) => {
         MODES.custom.break = parseInt(e.target.value);
         breakValDisplay.textContent = MODES.custom.break;
-    }); // Break updates don't change current timer unless we are in break, but here we are in selection mode (Work) usually
+    });
 }
 
 function selectMode(key) {
     currentModeKey = key;
 
-    // UI Update
+    // UI Update Pill
     modePills.forEach(p => p.classList.remove('active'));
     document.querySelector(`.mode-pill[data-mode="${key}"]`).classList.add('active');
 
-    // Show/Hide Custom Controls
+    // Show/Hide Free Mode Controls
     if (key === 'custom') {
         customControls.classList.remove('hidden');
     } else {
         customControls.classList.add('hidden');
     }
 
-    // Update Theme Colors
     updateTheme(key);
-
-    // Reset Timer to this mode's Work time
     resetTimerToWork();
 }
 
 function updateTheme(key) {
-    const color = MODES[key].color;
-    document.documentElement.style.setProperty('--theme-color', color);
+    const config = MODES[key];
+    const root = document.documentElement;
+
+    // We set the active variables to the specific gradient/color variables
+    // But since they are variables themselves, we need to read them or just set them by mapping values? 
+    // Easier way: just set the --active-gradient to the value of var(--grad-X)
+
+    // In JS we can just set the property directly to the var string
+    root.style.setProperty('--active-gradient', `var(${config.gradientVar})`);
+    root.style.setProperty('--active-color', `var(${config.colorVar})`);
 }
 
 function resetTimerToWork() {
@@ -116,51 +117,48 @@ function resetTimerToWork() {
 }
 
 function enterActiveMode() {
-    // Switch View
     views.selection.classList.add('hidden');
-    views.selection.style.display = 'none'; // Ensure layout removal
-
     views.active.classList.remove('hidden');
-    views.active.style.display = 'flex';
 
-    // Update Active View Text
-    const modeName = currentModeKey.replace('_', ' '); // deep_focus -> deep focus
-    activeModeTitle.textContent = modeName;
+    // Add border to main container
+    appContainer.classList.add('border-active');
+
+    // Title Text
+    let title = currentModeKey.replace('_', ' '); // deep_focus -> deep focus
+    if (currentModeKey === 'custom') title = 'Free Mode';
+    if (currentModeKey === 'deep_focus') title = 'Deep Focus';
+
+    // Capitalize
+    title = title.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    activeModeTitle.textContent = title;
 
     const work = MODES[currentModeKey].work;
     const brk = MODES[currentModeKey].break;
     cycleIndicator.textContent = `${work}-${brk}`;
 
-    // Start Timer
     startTimer();
 }
 
 function exitActiveMode() {
     stopTimer();
 
-    // Switch View Back
     views.active.classList.add('hidden');
     views.selection.classList.remove('hidden');
-    views.selection.style.display = 'flex'; // Restore flow
 
-    // Reset Timer logic? User probably wants to reset if they hit stop. 
+    // Remove border
+    appContainer.classList.remove('border-active');
+
     resetTimerToWork();
 }
 
 function startTimer() {
     if (isRunning) return;
     isRunning = true;
-
     timerInterval = setInterval(() => {
         if (timeLeft > 0) {
             timeLeft--;
             updateTimerDisplay();
         } else {
-            // Timer finished
-            // For MVP, just stop or handle phases. 
-            // Specs: "Indication... 25-5". 
-            // We'll just stop at 00:00 for now or flip to break -> out of scope for "visual redesign" request but good for UX.
-            // Let's just stop and alert visually.
             clearInterval(timerInterval);
             isRunning = false;
         }
