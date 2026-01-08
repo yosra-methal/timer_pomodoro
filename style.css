@@ -133,14 +133,21 @@ body {
     fill: var(--active-color-primary);
 }
 
+/* Active Mode: Center content vertically for better focus */
+.app-container.border-active .widget-card {
+    justify-content: center;
+}
+
 /* --- Active Mode Controls --- */
 .active-controls {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 16px;
-    margin-top: 10px;
+    gap: 20px;
+    /* Increased gap */
     width: 100%;
+    margin-top: 20px;
+    /* More space from indicator */
 }
 
 /* Reusing .play-btn styles but maybe handling size if needed, 
