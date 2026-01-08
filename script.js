@@ -314,10 +314,74 @@ function stopTimer() {
     cycleCount = 0;
 }
 
-// ... existing DOM - Flip Clock ... 
-// (Need to ensure toggleButton logic uses isRunning correctly)
+// DOM - Flip Clock
+const flipDigits = {
+    m1: document.getElementById('d-m1'),
+    m2: document.getElementById('d-m2'),
+    s1: document.getElementById('d-s1'),
+    s2: document.getElementById('d-s2')
+};
 
-// ... existing code ... 
+function updateTimerDisplay() {
+    // Calculate digits
+    const m = Math.floor(timeLeft / 60);
+    const s = timeLeft % 60;
+
+    const mStr = m.toString().padStart(2, '0');
+    const sStr = s.toString().padStart(2, '0');
+
+    updateDigit(flipDigits.m1, mStr[0]);
+    updateDigit(flipDigits.m2, mStr[1]);
+    updateDigit(flipDigits.s1, sStr[0]);
+    updateDigit(flipDigits.s2, sStr[1]);
+}
+
+function updateDigit(digitEl, newVal) {
+    const currentVal = digitEl.getAttribute('data-val');
+    if (currentVal === newVal) return;
+
+    // Trigger Flip
+    // 1. Set Back Faces to NEW value
+    digitEl.querySelector('.back-top').textContent = newVal;
+    digitEl.querySelector('.back-bottom').textContent = newVal;
+
+    // 2. Set Front Faces to OLD value (should already be there, but ensure)
+    digitEl.querySelector('.top').textContent = currentVal;
+    digitEl.querySelector('.bottom').textContent = currentVal;
+
+    // 3. Add flipping class
+    digitEl.classList.remove('flipping');
+    void digitEl.offsetWidth; // Trigger reflow
+    digitEl.classList.add('flipping');
+
+    // 4. After anim, commit state
+    setTimeout(() => {
+        digitEl.querySelector('.top').textContent = newVal;
+        digitEl.querySelector('.bottom').textContent = newVal;
+        digitEl.classList.remove('flipping');
+        digitEl.setAttribute('data-val', newVal);
+    }, 600);
+}
+
+// Force instant update without animation (for mode switch)
+function updateTimerDisplayInstant() {
+    const m = Math.floor(timeLeft / 60);
+    const s = timeLeft % 60;
+    const mStr = m.toString().padStart(2, '0');
+    const sStr = s.toString().padStart(2, '0');
+
+    setDigitInstant(flipDigits.m1, mStr[0]);
+    setDigitInstant(flipDigits.m2, mStr[1]);
+    setDigitInstant(flipDigits.s1, sStr[0]);
+    setDigitInstant(flipDigits.s2, sStr[1]);
+}
+
+function setDigitInstant(digitEl, val) {
+    digitEl.setAttribute('data-val', val);
+    digitEl.classList.remove('flipping');
+    const faces = digitEl.querySelectorAll('.flip-face');
+    faces.forEach(f => f.textContent = val);
+}
 
 function init() {
     setupListeners();
@@ -327,3 +391,5 @@ function init() {
     // Preload audio
     notificationSound.load();
 }
+
+init();
