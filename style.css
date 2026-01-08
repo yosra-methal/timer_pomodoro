@@ -9,7 +9,8 @@
 
     /* Soft Pastel Gradients (Strictly for Flip Clock Background) */
     --grad-standard-soft: linear-gradient(135deg, #C6DFFF 0%, #D9EEFF 100%);
-    --grad-light-soft: linear-gradient(135deg, #E3FBD6 0%, #E6FCE8 100%);
+    /* Darkened Green slightly per request */
+    --grad-light-soft: linear-gradient(135deg, #D9F7C4 0%, #E3FBD6 100%);
     --grad-deep-soft: linear-gradient(135deg, #ECE2FD 0%, #F5ECFF 100%);
     --grad-free-soft: linear-gradient(135deg, #FFE5CC 0%, #FFF0DE 100%);
 
@@ -267,7 +268,8 @@ body {
     background-image: linear-gradient(#FFF, #FFF), var(--active-gradient);
     background-origin: border-box;
     background-clip: content-box, border-box;
-    box-shadow: 0 0 20px -4px var(--active-color-primary);
+    /* Reduced shadow opacity for subtle halo */
+    box-shadow: 0 0 20px -4px rgba(0, 0, 0, 0.1);
     color: var(--active-color-primary);
     cursor: pointer;
     display: flex;

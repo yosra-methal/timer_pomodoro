@@ -128,9 +128,13 @@ function updateTitleText(key) {
 }
 
 function resetTimerToWork() {
-    const duration = MODES[currentModeKey].work;
-    timeLeft = duration * 60;
-    updateTimerDisplayInstant(); // No animation on reset
+    stopTimer(); // Ensure stopped before resetting
+    let duration = MODES[currentModeKey].work;
+    // Safety check
+    if (isNaN(duration) || duration < 1) duration = 25;
+
+    timeLeft = Math.floor(duration * 60);
+    updateTimerDisplayInstant();
 }
 
 function enterActiveMode() {
