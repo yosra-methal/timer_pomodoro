@@ -1,15 +1,17 @@
 :root {
     --bg-white: #FFFFFF;
 
-    /* Soft Pastel Gradients (Lighter than original, but COLORED) */
-    --grad-standard-milky: linear-gradient(135deg, #C6DFFF 0%, #D9EEFF 100%);
-    /* Soft Blue */
-    --grad-light-milky: linear-gradient(135deg, #E3FBD6 0%, #E6FCE8 100%);
-    /* Soft Green */
-    --grad-deep-milky: linear-gradient(135deg, #ECE2FD 0%, #F5ECFF 100%);
-    /* Soft Purple */
-    --grad-free-milky: linear-gradient(135deg, #FFE5CC 0%, #FFF0DE 100%);
-    /* Soft Orange */
+    /* ORIGINAL Rich Gradients (Restored for Widget Border/Play Button) */
+    --grad-standard: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+    --grad-light: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+    --grad-deep: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+    --grad-free: linear-gradient(135deg, #fccb90 0%, #d57eeb 100%);
+
+    /* Soft Pastel Gradients (Strictly for Flip Clock Background) */
+    --grad-standard-soft: linear-gradient(135deg, #C6DFFF 0%, #D9EEFF 100%);
+    --grad-light-soft: linear-gradient(135deg, #E3FBD6 0%, #E6FCE8 100%);
+    --grad-deep-soft: linear-gradient(135deg, #ECE2FD 0%, #F5ECFF 100%);
+    --grad-free-soft: linear-gradient(135deg, #FFE5CC 0%, #FFF0DE 100%);
 
     /* Original Pastels for Text/Accents */
     --text-standard: #6495ED;
@@ -18,7 +20,10 @@
     --text-free: #FFA726;
 
     /* Active Variable placeholders */
-    --active-gradient: var(--grad-standard-milky);
+    --active-gradient: var(--grad-standard);
+    /* Main Rich Gradient */
+    --active-gradient-subtle: var(--grad-standard-soft);
+    /* Flip Clock Soft Gradient */
     --active-color-primary: var(--text-standard);
 
     --text-primary: #2c3e50;
@@ -131,7 +136,7 @@ body {
     width: 100%;
     height: 50%;
     overflow: hidden;
-    background: var(--active-gradient);
+    background: var(--active-gradient-subtle);
     /* Uses the Soft Pastel Gradient */
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;

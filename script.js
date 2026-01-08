@@ -2,25 +2,25 @@ const MODES = {
     standard: {
         work: 25,
         break: 5,
-        gradientVar: '--grad-standard-milky',
+        gradientVar: '--grad-standard', /* Original Rich */
         primaryColor: 'var(--text-standard)'
     },
     light: {
         work: 15,
         break: 5,
-        gradientVar: '--grad-light-milky',
+        gradientVar: '--grad-light',
         primaryColor: 'var(--text-light)'
     },
     deep_focus: {
         work: 50,
         break: 10,
-        gradientVar: '--grad-deep-milky',
+        gradientVar: '--grad-deep',
         primaryColor: 'var(--text-deep)'
     },
     custom: {
         work: 25,
         break: 5,
-        gradientVar: '--grad-free-milky',
+        gradientVar: '--grad-free',
         primaryColor: 'var(--text-free)'
     }
 };
