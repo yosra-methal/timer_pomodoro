@@ -63,12 +63,13 @@ body {
 
 /* --- Top Title --- */
 .top-mode-title {
-    font-size: 14px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 4px;
-    /* Close to timer */
+    font-size: 32px;
+    font-weight: 800;
+    text-transform: capitalize;
+    /* user might prefer normal case if it's huge, but let's stick to spec or capitalize */
+    letter-spacing: -0.5px;
+    margin-bottom: 0px;
+    line-height: 1.2;
 
     /* Colored Text */
     color: var(--active-color-primary);
