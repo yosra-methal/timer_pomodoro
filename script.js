@@ -422,16 +422,9 @@ function handleResize() {
     // Exact Design Dimensions (Design Validé)
     const baseWidth = 330;  // 320 + slight padding buffer
 
-    // Dynamic Height Calculation:
-    // If Custom Mode is selected AND we are in Selection View (not active timer), the widget is taller due to sliders.
-    // Standard: ~480px. Custom: ~600px.
-    let baseHeight = 480;
-
-    // Check if Custom Mode is active and we are NOT in active timer view
-    // (views.active has 'hidden' class when in selection)
-    if (currentModeKey === 'custom' && views.active.classList.contains('hidden')) {
-        baseHeight = 600; // Adjusted height for Free Mode inputs
-    }
+    // Unified Height to prevent "jump" effect between modes.
+    // 540px fits 'Free Mode' comfortably and keeps other modes consistent.
+    const baseHeight = 540;
 
     // Available space in the iframe/window
     const availWidth = window.innerWidth;
