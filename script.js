@@ -276,43 +276,45 @@ function completeTransition() {
     switchPhase();
 }
 
-function switchPhase() {
-    // Toggle Work/Break
-    if (isWorkSession) {
-        // Work -> Break
-        isWorkSession = false;
+// Toggle Work/Break
+if (isWorkSession) {
+    // Work -> Break
+    isWorkSession = false;
 
-        // Check for long break logic (every 4 cycles)
-        cycleCount++;
-        const config = MODES[currentModeKey];
-        let nextDuration = config.break;
+    // Check for long break logic (every 4 cycles)
+    cycleCount++;
+    const config = MODES[currentModeKey];
+    let nextDuration = config.break;
 
-        // Simple 4-cycle trigger for long break if defined
-        if (config.long_break && cycleCount % (config.trigger || 4) === 0) {
-            nextDuration = config.long_break;
-        }
-
-        timeLeft = nextDuration * 60;
-        cycleIndicator.textContent = "Break"; // Or keep hidden
-
-    } else {
-        // Break -> Work
-        isWorkSession = true;
-        const config = MODES[currentModeKey];
-        timeLeft = config.work * 60;
+    // Simple 4-cycle trigger for long break if defined
+    if (config.long_break && cycleCount % (config.trigger || 4) === 0) {
+        nextDuration = config.long_break;
     }
 
-    // Reset Sound Trigger for next run
-    isSoundTriggered = false;
+    timeLeft = nextDuration * 60;
 
-    // UI Update (The "Flip")
-    updateTimerDisplayInstant();
+    // Visuals: Break Mode
+    appContainer.classList.add('break-active');
 
-    // Auto-Resume? Prompt implies "Loop for Work Resume", "synchronized hand-off".
-    // Usually Pomodoros auto-start next phase?
-    // "Loop for Work Resume" implies continuity.
-    startTimer();
-    updateToggleBtn(true);
+} else {
+    // Break -> Work
+    isWorkSession = true;
+    const config = MODES[currentModeKey];
+    timeLeft = config.work * 60;
+
+    // Visuals: Back to Work Mode
+    appContainer.classList.remove('break-active');
+}
+
+// Reset Sound Trigger for next run
+isSoundTriggered = false;
+
+// UI Update (The "Flip")
+updateTimerDisplayInstant();
+
+// Auto-Resume
+startTimer();
+updateToggleBtn(true);
 }
 
 function pauseTimer() {
@@ -334,6 +336,9 @@ function stopTimer() {
     // Reset to Work Session start
     isWorkSession = true;
     cycleCount = 0;
+
+    // Clear Break Visuals
+    appContainer.classList.remove('break-active');
 }
 
 // DOM - Flip Clock

@@ -59,84 +59,83 @@
                     </div>
                 </div>
             </div>
+            <div id="breakMessage" class="break-message">Take a break!</div>
+        </div>
 
-            <!-- View 1: Selection Mode -->
-            <div id="selectionView" class="view-container selection-view">
+        <!-- View 1: Selection Mode -->
+        <div id="selectionView" class="view-container selection-view">
 
-                <!-- Play Button -->
-                <button id="startBtn" class="play-btn" aria-label="Start">
-                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8 5V19L19 12L8 5Z" />
+            <!-- Play Button -->
+            <button id="startBtn" class="play-btn" aria-label="Start">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 5V19L19 12L8 5Z" />
+                </svg>
+            </button>
+
+            <!-- Mode Selectors (Restored User Titles) -->
+            <div class="mode-grid">
+                <button class="mode-pill active" data-mode="standard">
+                    Standard <span class="time-detail">25 • 5 <svg width="10" height="10" viewBox="0 0 24 24"
+                            fill="currentColor" style="display:inline-block; vertical-align:middle; margin-bottom:1px;">
+                            <path
+                                d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+                        </svg> 20</span>
+                </button>
+                <button class="mode-pill" data-mode="light">
+                    Light <span class="time-detail">15 • 5 <svg width="10" height="10" viewBox="0 0 24 24"
+                            fill="currentColor" style="display:inline-block; vertical-align:middle; margin-bottom:1px;">
+                            <path
+                                d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+                        </svg> 15</span>
+                </button>
+                <button class="mode-pill" data-mode="deep_focus">
+                    Deep Focus <span class="time-detail">50 • 10 <svg width="10" height="10" viewBox="0 0 24 24"
+                            fill="currentColor" style="display:inline-block; vertical-align:middle; margin-bottom:1px;">
+                            <path
+                                d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+                        </svg> 30</span>
+                </button>
+                <button class="mode-pill" data-mode="custom">
+                    Free Mode <span class="time-detail">Custom</span>
+                </button>
+            </div>
+
+            <!-- Custom Sliders -->
+            <div id="customControls" class="custom-controls hidden">
+                <div class="slider-row">
+                    <label>Work</label>
+                    <input type="range" id="workSlider" min="5" max="90" value="25">
+                    <span id="workValueDisplay">25</span>
+                </div>
+                <div class="slider-row">
+                    <label>Break</label>
+                    <input type="range" id="breakSlider" min="1" max="30" value="5">
+                    <span id="breakValueDisplay">5</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- View 2: Active Mode -->
+        <div id="activeView" class="view-container active-view hidden">
+            <div id="cycleIndicator" class="cycle-indicator">25-5</div>
+            <div class="active-controls">
+                <button id="activeToggleBtn" class="play-btn small-play-btn" aria-label="Pause">
+                    <!-- Default to Pause Icon since we auto-start -->
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 4L14 4V20L10 20V4Z" />
+                        <path d="M6 4L6 20" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+                        <path d="M18 4L18 20" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+                        <!-- Actually let's use simple rects for pause or a standard path -->
+                        <rect x="7" y="5" width="4" height="14" rx="2" fill="currentColor" />
+                        <rect x="13" y="5" width="4" height="14" rx="2" fill="currentColor" />
                     </svg>
                 </button>
 
-                <!-- Mode Selectors (Restored User Titles) -->
-                <div class="mode-grid">
-                    <button class="mode-pill active" data-mode="standard">
-                        Standard <span class="time-detail">25 • 5 <svg width="10" height="10" viewBox="0 0 24 24"
-                                fill="currentColor"
-                                style="display:inline-block; vertical-align:middle; margin-bottom:1px;">
-                                <path
-                                    d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
-                            </svg> 20</span>
-                    </button>
-                    <button class="mode-pill" data-mode="light">
-                        Light <span class="time-detail">15 • 5 <svg width="10" height="10" viewBox="0 0 24 24"
-                                fill="currentColor"
-                                style="display:inline-block; vertical-align:middle; margin-bottom:1px;">
-                                <path
-                                    d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
-                            </svg> 15</span>
-                    </button>
-                    <button class="mode-pill" data-mode="deep_focus">
-                        Deep Focus <span class="time-detail">50 • 10 <svg width="10" height="10" viewBox="0 0 24 24"
-                                fill="currentColor"
-                                style="display:inline-block; vertical-align:middle; margin-bottom:1px;">
-                                <path
-                                    d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
-                            </svg> 30</span>
-                    </button>
-                    <button class="mode-pill" data-mode="custom">
-                        Free Mode <span class="time-detail">Custom</span>
-                    </button>
-                </div>
-
-                <!-- Custom Sliders -->
-                <div id="customControls" class="custom-controls hidden">
-                    <div class="slider-row">
-                        <label>Work</label>
-                        <input type="range" id="workSlider" min="5" max="90" value="25">
-                        <span id="workValueDisplay">25</span>
-                    </div>
-                    <div class="slider-row">
-                        <label>Break</label>
-                        <input type="range" id="breakSlider" min="1" max="30" value="5">
-                        <span id="breakValueDisplay">5</span>
-                    </div>
-                </div>
+                <button id="exitBtn" class="exit-link">Exit</button>
             </div>
-
-            <!-- View 2: Active Mode -->
-            <div id="activeView" class="view-container active-view hidden">
-                <div id="cycleIndicator" class="cycle-indicator">25-5</div>
-                <div class="active-controls">
-                    <button id="activeToggleBtn" class="play-btn small-play-btn" aria-label="Pause">
-                        <!-- Default to Pause Icon since we auto-start -->
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10 4L14 4V20L10 20V4Z" />
-                            <path d="M6 4L6 20" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
-                            <path d="M18 4L18 20" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
-                            <!-- Actually let's use simple rects for pause or a standard path -->
-                            <rect x="7" y="5" width="4" height="14" rx="2" fill="currentColor" />
-                            <rect x="13" y="5" width="4" height="14" rx="2" fill="currentColor" />
-                        </svg>
-                    </button>
-
-                    <button id="exitBtn" class="exit-link">Exit</button>
-                </div>
-            </div>
-
         </div>
+
+    </div>
     </div>
     <script src="script.js"></script>
 </body>

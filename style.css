@@ -485,6 +485,42 @@ body {
     /* Reduced from 30px to pull content up */
 }
 
+/* Break Mode Styles */
+.break-message {
+    text-align: center;
+    font-family: var(--font-primary);
+    font-size: 13px;
+    font-weight: 500;
+    color: #999999;
+    margin-top: 12px;
+    opacity: 0;
+    transform: translateY(-5px);
+    transition: all 0.3s ease;
+    height: 0;
+    /* avoid spacing when hidden */
+}
+
+.mode-active.break-active .break-message {
+    opacity: 1;
+    transform: translateY(0);
+    height: auto;
+    margin-bottom: 8px;
+}
+
+/* Break Mode Flip Clock Overrides */
+.mode-active.break-active .flip-face {
+    background: #FFFFFF !important;
+    /* White Background */
+    color: var(--active-color-primary) !important;
+    /* Title Color Digits */
+    /* Border matching the digits/theme */
+    box-shadow: inset 0 0 0 2px var(--active-color-primary);
+}
+
+.mode-active.break-active .flip-separator {
+    color: var(--active-color-primary) !important;
+}
+
 .cycle-indicator {
     display: none !important;
     /* "Get off the numbers" */
