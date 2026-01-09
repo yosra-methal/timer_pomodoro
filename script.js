@@ -114,6 +114,9 @@ function selectMode(key) {
     updateTheme(key);
     updateTitleText(key);
     resetTimerToWork();
+
+    // Trigger Resize because height might change (Custom vs Standard)
+    setTimeout(handleResize, 50); // Small delay for DOM update
 }
 
 function updateTheme(key) {
@@ -157,6 +160,8 @@ function enterActiveMode() {
     // Auto Start
     startTimer();
     updateToggleBtn(true);
+
+    setTimeout(handleResize, 50);
 }
 
 function exitActiveMode() {
@@ -165,6 +170,8 @@ function exitActiveMode() {
     views.selection.classList.remove('hidden');
     appContainer.classList.remove('mode-active'); // Disable centered layout
     resetTimerToWork();
+
+    setTimeout(handleResize, 50);
 }
 
 function toggleTimerState() {
@@ -414,7 +421,17 @@ function init() {
 function handleResize() {
     // Exact Design Dimensions (Design Validé)
     const baseWidth = 330;  // 320 + slight padding buffer
-    const baseHeight = 480; // Min height for active view with shadows
+
+    // Dynamic Height Calculation:
+    // If Custom Mode is selected AND we are in Selection View (not active timer), the widget is taller due to sliders.
+    // Standard: ~480px. Custom: ~600px.
+    let baseHeight = 480;
+
+    // Check if Custom Mode is active and we are NOT in active timer view
+    // (views.active has 'hidden' class when in selection)
+    if (currentModeKey === 'custom' && views.active.classList.contains('hidden')) {
+        baseHeight = 600; // Adjusted height for Free Mode inputs
+    }
 
     // Available space in the iframe/window
     const availWidth = window.innerWidth;
@@ -434,17 +451,9 @@ function handleResize() {
     scale = Math.min(scale, 2.5);
 
     // Apply Scale
-    // We use translate(-50%, -50%) + left/top 50% on body/container to center, 
-    // OR we can just use transform origin center.
-    // The cleanest way for a single widget is to transform the container 
-    // and rely on flexbox centering in body, but flex center breaks with scale if margin isn't handled.
-
-    // Better approach:
     appContainer.style.transformOrigin = 'center center';
     appContainer.style.transform = `scale(${scale})`;
 
-    // IMPORTANT: When scaling down, we don't need margins. 
-    // When scaling up, flexbox handles centering naturally if body is flex.
     appContainer.style.margin = '0';
 }
 
