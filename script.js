@@ -209,122 +209,6 @@ notificationSound.addEventListener('error', (e) => {
     audioDuration = 3; // Fallback
 });
 
-// Persistent Timer State
-const STORAGE_KEY = 'pomodoro_timer_state';
-
-function saveTimerState() {
-    const state = {
-        isRunning,
-        startTimestamp: isRunning ? Date.now() - ((MODES[currentModeKey][isWorkSession ? 'work' : 'break'] * 60 - timeLeft) * 1000) : null,
-        totalDuration: isWorkSession ? MODES[currentModeKey].work * 60 : MODES[currentModeKey].break * 60,
-        currentModeKey,
-        isWorkSession,
-        cycleCount,
-        isSoundTriggered
-    };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-}
-
-function loadTimerState() {
-    const savedState = localStorage.getItem(STORAGE_KEY);
-    if (!savedState) return false;
-
-    try {
-        const state = JSON.parse(savedState);
-
-        if (state.isRunning && state.startTimestamp) {
-            // Calculate elapsed time
-            const elapsed = Math.floor((Date.now() - state.startTimestamp) / 1000);
-            const remaining = state.totalDuration - elapsed;
-
-            if (remaining > 0) {
-                // Timer still has time left
-                currentModeKey = state.currentModeKey;
-                isWorkSession = state.isWorkSession;
-                cycleCount = state.cycleCount;
-                timeLeft = remaining;
-                isSoundTriggered = state.isSoundTriggered;
-
-                // Update UI and restart
-                selectMode(currentModeKey); // This will call resetTimerToWork, which will overwrite timeLeft.
-                // So we need to re-set timeLeft after selectMode.
-                timeLeft = remaining; // Re-apply the calculated timeLeft
-                enterActiveMode();
-                return true;
-            } else {
-                // Timer expired while away - handle all transitions that should have happened
-                currentModeKey = state.currentModeKey;
-                isWorkSession = state.isWorkSession;
-                cycleCount = state.cycleCount;
-
-                // Process transitions
-                handleMissedTransitions(Math.abs(remaining));
-                enterActiveMode(); // Enter active mode after handling transitions
-                return true;
-            }
-        } else if (!state.isRunning && state.currentModeKey) {
-            // Timer was paused, just restore the state
-            currentModeKey = state.currentModeKey;
-            isWorkSession = state.isWorkSession;
-            cycleCount = state.cycleCount;
-            timeLeft = state.totalDuration - Math.floor((Date.now() - state.startTimestamp) / 1000); // Recalculate timeLeft based on startTimestamp and totalDuration
-            if (timeLeft < 0) timeLeft = 0; // Ensure timeLeft is not negative
-            isSoundTriggered = state.isSoundTriggered;
-
-            selectMode(currentModeKey);
-            // If it was paused, we don't auto-start, just show the active view with correct time
-            views.selection.classList.add('hidden');
-            views.active.classList.remove('hidden');
-            appContainer.classList.add('mode-active');
-            updateToggleBtn(false); // Show play button
-            updateTimerDisplayInstant();
-            return true;
-        }
-    } catch (e) {
-        console.error('Failed to load timer state:', e);
-        localStorage.removeItem(STORAGE_KEY);
-    }
-    return false;
-}
-
-function handleMissedTransitions(overtimeSeconds) {
-    // If timer expired while user was away, complete the transition
-    // For simplicity, just switch to the next phase
-    let totalOvertime = overtimeSeconds;
-    let currentPhaseDuration = isWorkSession ? MODES[currentModeKey].work * 60 : MODES[currentModeKey].break * 60;
-
-    while (totalOvertime >= currentPhaseDuration) {
-        totalOvertime -= currentPhaseDuration;
-
-        if (isWorkSession) {
-            // Work -> Break
-            isWorkSession = false;
-            cycleCount++;
-            const config = MODES[currentModeKey];
-            let nextDuration = config.break;
-            if (config.long_break && cycleCount % (config.trigger || 4) === 0) {
-                nextDuration = config.long_break;
-            }
-            currentPhaseDuration = nextDuration * 60;
-        } else {
-            // Break -> Work
-            isWorkSession = true;
-            currentPhaseDuration = MODES[currentModeKey].work * 60;
-        }
-    }
-
-    // Set timeLeft to the remaining time in the current phase
-    timeLeft = currentPhaseDuration - totalOvertime;
-    if (timeLeft < 0) timeLeft = 0; // Should not happen with the loop, but safety
-
-    isSoundTriggered = false;
-    updateTimerDisplayInstant();
-    saveTimerState();
-}
-
-function clearTimerState() {
-    localStorage.removeItem(STORAGE_KEY);
-}
 
 // State for Cycle
 let isWorkSession = true;
@@ -341,8 +225,6 @@ function startTimer() {
         isSoundTriggered = false;
     }
 
-    saveTimerState(); // Save when starting
-
     timerInterval = setInterval(() => {
         if (timeLeft > 0) {
             // Pre-transition Trigger check
@@ -355,21 +237,14 @@ function startTimer() {
                 isSoundTriggered = true;
                 notificationSound.currentTime = 0;
                 notificationSound.play().catch(e => console.log("Audio play failed", e));
-                saveTimerState(); // Save sound trigger state
             }
 
             timeLeft--;
             updateTimerDisplay();
-
-            // Save state periodically (every 5 seconds to avoid too many writes)
-            if (timeLeft % 5 === 0) {
-                saveTimerState();
-            }
         } else {
             // Timer reached 0
             clearInterval(timerInterval);
             isRunning = false; // CRITICAL: Must set to false to allow restart
-            saveTimerState();
             handleSessionEnd();
         }
     }, 1000);
@@ -436,7 +311,6 @@ function switchPhase() {
 function pauseTimer() {
     clearInterval(timerInterval);
     isRunning = false;
-    saveTimerState(); // Save paused state
     // If paused during sound, sound might continue? 
     // Usually pause should pause sound too strictly, but typically ok to let it finish or pause.
     if (!notificationSound.paused) {
@@ -453,7 +327,6 @@ function stopTimer() {
     // Reset to Work Session start
     isWorkSession = true;
     cycleCount = 0;
-    clearTimerState(); // Clear persistent state when stopping
 }
 
 // DOM - Flip Clock
@@ -527,15 +400,8 @@ function setDigitInstant(digitEl, val) {
 
 function init() {
     setupListeners();
-
-    // Try to restore previous timer state
-    const restored = loadTimerState();
-
-    if (!restored) {
-        // No saved state, start fresh
-        selectMode('standard');
-        updateTimerDisplayInstant();
-    }
+    selectMode('standard');
+    updateTimerDisplayInstant();
 
     // Preload audio
     notificationSound.load();
