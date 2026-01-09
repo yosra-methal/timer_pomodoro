@@ -405,6 +405,43 @@ function init() {
 
     // Preload audio
     notificationSound.load();
+
+    // Auto-Scale Logic (Upscale Only)
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Initial call
+}
+
+function handleResize() {
+    // Base dimensions
+    const baseWidth = 340; // 320 + margins
+    const baseHeight = 500; // Approx height
+
+    // Available space
+    const availWidth = window.innerWidth;
+    const availHeight = window.innerHeight;
+
+    let scale = 1;
+
+    // Only scale UP if there is extra space
+    if (availWidth > baseWidth && availHeight > baseHeight) {
+        const scaleW = availWidth / baseWidth;
+        const scaleH = availHeight / baseHeight;
+        // Limit max scale to avoid pixelation, e.g. 2x
+        scale = Math.min(scaleW, scaleH, 1.5);
+    }
+
+    // If cropped (scale 1), CSS overflow handles scroll.
+    // Apply scale
+    if (scale > 1) {
+        appContainer.style.transform = `scale(${scale})`;
+        // Adjust margins to prevent overflow issues when scaled
+        const marginH = (scale - 1) * baseHeight / 2;
+        const marginW = (scale - 1) * baseWidth / 2;
+        appContainer.style.margin = `${marginH}px ${marginW}px`;
+    } else {
+        appContainer.style.transform = 'none';
+        appContainer.style.margin = '0';
+    }
 }
 
 init();

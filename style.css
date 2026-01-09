@@ -46,8 +46,11 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    /* Allow scroll if cropped */
+    overflow: auto;
     color: var(--text-primary);
+    margin: 0;
+    /* Reset margin */
 }
 
 .app-container {
@@ -58,6 +61,9 @@ body {
     /* Restored Neutral Shadow */
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
     transition: background 0.3s ease;
+    /* Prevent shrinking, ensure intact */
+    flex-shrink: 0;
+    transform-origin: center center;
 }
 
 .widget-card {
