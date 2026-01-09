@@ -46,8 +46,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* Allow scroll if cropped */
-    overflow: auto;
+    /* Scale logic handles fit, so hide overflow */
+    overflow: hidden;
     color: var(--text-primary);
     margin: 0;
     /* Reset margin */

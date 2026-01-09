@@ -412,36 +412,40 @@ function init() {
 }
 
 function handleResize() {
-    // Base dimensions
-    const baseWidth = 340; // 320 + margins
-    const baseHeight = 500; // Approx height
+    // Exact Design Dimensions (Design Validé)
+    const baseWidth = 330;  // 320 + slight padding buffer
+    const baseHeight = 480; // Min height for active view with shadows
 
-    // Available space
+    // Available space in the iframe/window
     const availWidth = window.innerWidth;
     const availHeight = window.innerHeight;
 
-    let scale = 1;
+    // Calculate Scale to FIT
+    // We want the widget to maximize space but never overflow
+    const scaleW = availWidth / baseWidth;
+    const scaleH = availHeight / baseHeight;
 
-    // Only scale UP if there is extra space
-    if (availWidth > baseWidth && availHeight > baseHeight) {
-        const scaleW = availWidth / baseWidth;
-        const scaleH = availHeight / baseHeight;
-        // Limit max scale to avoid pixelation, e.g. 2x
-        scale = Math.min(scaleW, scaleH, 1.5);
-    }
+    // Choose the smaller scale to ensure it fits both width and height (Contain)
+    // Allow scaling DOWN (e.g. 0.5) and UP (e.g. 1.5)
+    let scale = Math.min(scaleW, scaleH);
 
-    // If cropped (scale 1), CSS overflow handles scroll.
-    // Apply scale
-    if (scale > 1) {
-        appContainer.style.transform = `scale(${scale})`;
-        // Adjust margins to prevent overflow issues when scaled
-        const marginH = (scale - 1) * baseHeight / 2;
-        const marginW = (scale - 1) * baseWidth / 2;
-        appContainer.style.margin = `${marginH}px ${marginW}px`;
-    } else {
-        appContainer.style.transform = 'none';
-        appContainer.style.margin = '0';
-    }
+    // Cap slight oversizing to avoid blurriness if desired, 
+    // but usually for widgets we let it grow. Capping at 2x is safe.
+    scale = Math.min(scale, 2.5);
+
+    // Apply Scale
+    // We use translate(-50%, -50%) + left/top 50% on body/container to center, 
+    // OR we can just use transform origin center.
+    // The cleanest way for a single widget is to transform the container 
+    // and rely on flexbox centering in body, but flex center breaks with scale if margin isn't handled.
+
+    // Better approach:
+    appContainer.style.transformOrigin = 'center center';
+    appContainer.style.transform = `scale(${scale})`;
+
+    // IMPORTANT: When scaling down, we don't need margins. 
+    // When scaling up, flexbox handles centering naturally if body is flex.
+    appContainer.style.margin = '0';
 }
 
 init();
