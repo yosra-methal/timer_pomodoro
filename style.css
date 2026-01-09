@@ -517,7 +517,7 @@ body {
     /* Text Color: Primary Color (Title) */
     /* Use opacity to simulate "Pastel" softness since gradient text is unstable on cards */
     color: var(--active-color-primary) !important;
-    opacity: 0.85;
+    opacity: 0.4;
 
     border: 2px solid transparent !important;
     box-shadow: none !important;
@@ -534,7 +534,7 @@ body {
 
 .mode-active.break-active .flip-separator {
     color: var(--active-color-primary) !important;
-    opacity: 0.85;
+    opacity: 0.4;
 }
 
 .cycle-indicator {
