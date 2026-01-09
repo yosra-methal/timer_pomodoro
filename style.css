@@ -509,18 +509,40 @@ body {
 }
 
 /* Break Mode Flip Clock Overrides */
+/* Break Mode Flip Clock Overrides */
+/* 1. Reset Main Face to be transparent for text clipping */
 .mode-active.break-active .flip-face {
-    /* White Background + Gradient Border Trick */
-    background: linear-gradient(#fff, #fff) padding-box,
-        var(--active-gradient) border-box !important;
-    color: var(--active-color-primary) !important;
-    border: 2px solid transparent !important;
-    /* Transparent for gradient to show */
+    /* Text Gradient */
+    background: var(--active-gradient-subtle) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    color: transparent !important;
+
+    /* Remove borders/bg from main element */
+    border: none !important;
     box-shadow: none !important;
+    /* Ensure stacking */
+    position: absolute;
+    z-index: 1;
+    /* Stay above pseudo */
 }
 
-/* Finely tuned middle line for Break Mode */
-.mode-active.break-active .flip-face.top {
+/* 2. Use Pseudo-element for the Card Background & Border */
+.mode-active.break-active .flip-face::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+
+    /* White Background + Gradient Border Trick */
+    background: linear-gradient(#fff, #fff) padding-box,
+        var(--active-gradient) border-box;
+    border: 2px solid transparent;
+    border-radius: inherit;
+}
+
+/* 3. Middle Line on the Pseudo-element instead */
+.mode-active.break-active .flip-face.top::before {
     border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
 }
 
