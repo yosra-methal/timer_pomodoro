@@ -276,45 +276,46 @@ function completeTransition() {
     switchPhase();
 }
 
-// Toggle Work/Break
-if (isWorkSession) {
-    // Work -> Break
-    isWorkSession = false;
+function switchPhase() {
+    // Toggle Work/Break
+    if (isWorkSession) {
+        // Work -> Break
+        isWorkSession = false;
 
-    // Check for long break logic (every 4 cycles)
-    cycleCount++;
-    const config = MODES[currentModeKey];
-    let nextDuration = config.break;
+        // Check for long break logic (every 4 cycles)
+        cycleCount++;
+        const config = MODES[currentModeKey];
+        let nextDuration = config.break;
 
-    // Simple 4-cycle trigger for long break if defined
-    if (config.long_break && cycleCount % (config.trigger || 4) === 0) {
-        nextDuration = config.long_break;
+        // Simple 4-cycle trigger for long break if defined
+        if (config.long_break && cycleCount % (config.trigger || 4) === 0) {
+            nextDuration = config.long_break;
+        }
+
+        timeLeft = nextDuration * 60;
+
+        // Visuals: Break Mode
+        appContainer.classList.add('break-active');
+
+    } else {
+        // Break -> Work
+        isWorkSession = true;
+        const config = MODES[currentModeKey];
+        timeLeft = config.work * 60;
+
+        // Visuals: Back to Work Mode
+        appContainer.classList.remove('break-active');
     }
 
-    timeLeft = nextDuration * 60;
+    // Reset Sound Trigger for next run
+    isSoundTriggered = false;
 
-    // Visuals: Break Mode
-    appContainer.classList.add('break-active');
+    // UI Update (The "Flip")
+    updateTimerDisplayInstant();
 
-} else {
-    // Break -> Work
-    isWorkSession = true;
-    const config = MODES[currentModeKey];
-    timeLeft = config.work * 60;
-
-    // Visuals: Back to Work Mode
-    appContainer.classList.remove('break-active');
-}
-
-// Reset Sound Trigger for next run
-isSoundTriggered = false;
-
-// UI Update (The "Flip")
-updateTimerDisplayInstant();
-
-// Auto-Resume
-startTimer();
-updateToggleBtn(true);
+    // Auto-Resume
+    startTimer();
+    updateToggleBtn(true);
 }
 
 function pauseTimer() {
